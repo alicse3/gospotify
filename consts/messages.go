@@ -31,5 +31,5 @@ const (
 	MsgUnsupportedPlatform = "unsupported platform"
 	MsgUknownErrorType     = "Unknown error type"
 
-	MsgCodeReceived = "Authorization code received! You can close this window now."
+	MsgCodeReceived = "Okay! You can close this window now."
 )
