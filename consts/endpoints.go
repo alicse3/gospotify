@@ -50,4 +50,7 @@ const (
 
 	// Genres related endpoints
 	EndpointGetAvailableGenreSeeds = "/v1/recommendations/available-genre-seeds" // Retrieve a list of available genres seed parameter values for recommendations.
+
+	// Markets related endpoints
+	EndpointGetAvailableMarkets = "/v1/markets" // Get the list of markets where Spotify is available.
 )
