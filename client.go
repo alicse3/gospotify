@@ -263,19 +263,19 @@ func (c *Client) GetAlbumTracks(input models.GetAlbumTracksRequest) (*models.Tra
 }
 
 // GetSavedAlbums gets the saved albums information.
-// Rquired authorization scopes: user-library-read
+// Required authorization scopes: user-library-read
 func (c *Client) GetSavedAlbums(input models.GetSavedAlbumsRequest) (*models.SavedAlbums, error) {
 	return c.albumService.GetSavedAlbums(input)
 }
 
 // SaveAlbums saves the albums information.
-// Rquired authorization scopes: user-library-modify
+// Required authorization scopes: user-library-modify
 func (c *Client) SaveAlbums(input models.SaveAlbumsRequest) error {
 	return c.albumService.SaveAlbums(input)
 }
 
 // CheckSavedAlbums checks and returns the saved albums information.
-// Rquired authorization scopes: user-library-read
+// Required authorization scopes: user-library-read
 func (c *Client) CheckSavedAlbums(input models.CheckSavedAlbumsRequest) (*models.CheckSavedAlbums, error) {
 	return c.albumService.CheckSavedAlbums(input)
 }
@@ -326,25 +326,25 @@ func (c *Client) GetAudiobookChapters(input models.GetAudiobookChaptersRequest) 
 }
 
 // GetSavedAudiobooks returns the saved audiobooks information.
-// Rquired authorization scopes: user-library-read
+// Required authorization scopes: user-library-read
 func (c *Client) GetSavedAudiobooks(input models.GetSavedAudiobooksRequest) (*models.SavedAudiobooks, error) {
 	return c.audiobookService.GetSavedAudiobooks(input)
 }
 
 // SaveAudiobooks saves the audiobooks information.
-// Rquired authorization scopes: user-library-modify
+// Required authorization scopes: user-library-modify
 func (c *Client) SaveAudiobooks(input models.SaveAudiobooksRequest) error {
 	return c.audiobookService.SaveAudiobooks(input)
 }
 
 // DeleteAudiobooks deletes the audiobooks information.
-// Rquired authorization scopes: user-library-modify
+// Required authorization scopes: user-library-modify
 func (c *Client) DeleteAudiobooks(input models.RemoveAudiobooksRequest) error {
 	return c.audiobookService.DeleteAudiobooks(input)
 }
 
 // CheckSavedAudiobooks returns the check saved audiobooks information.
-// Rquired authorization scopes: user-library-read
+// Required authorization scopes: user-library-read
 func (c *Client) CheckSavedAudiobooks(input models.CheckSavedAudiobooksRequest) (*models.CheckSavedAudiobooks, error) {
 	return c.audiobookService.CheckSavedAudiobooks(input)
 }
@@ -370,31 +370,37 @@ func (c *Client) GetChapters(input models.GetChaptersRequest) (*models.Chapters,
 }
 
 // GetEpisode returns the episode information.
+// Required authorization scopes: user-read-playback-position
 func (c *Client) GetEpisode(input models.GetEpisodeRequest) (*models.Episode, error) {
 	return c.episodeService.GetEpisode(input)
 }
 
 // GetEpisodes returns the episodes information.
+// Required authorization scopes: user-read-playback-position
 func (c *Client) GetEpisodes(input models.GetEpisodesRequest) (*models.Episodes, error) {
 	return c.episodeService.GetEpisodes(input)
 }
 
 // GetSavedEpisodes returns the saved episodes information.
+// Required authorization scopes: user-library-read, user-read-playback-position
 func (c *Client) GetSavedEpisodes(input models.GetSavedEpisodesRequest) (*models.SavedEpisodes, error) {
 	return c.episodeService.GetSavedEpisodes(input)
 }
 
 // SaveEpisodes saves the episodes information.
+// Required authorization scopes: user-library-modify
 func (c *Client) SaveEpisodes(input models.SaveEpisodesRequest) error {
 	return c.episodeService.SaveEpisodes(input)
 }
 
 // RemoveEpisodes removes the episodes information.
+// Required authorization scopes: user-library-modify
 func (c *Client) RemoveEpisodes(input models.RemoveEpisodesRequest) error {
 	return c.episodeService.RemoveEpisodes(input)
 }
 
 // CheckSavedEpisodes checks the saved episodes information.
+// Required authorization scopes: user-library-read
 func (c *Client) CheckSavedEpisodes(input models.CheckSavedEpisodesRequest) (*models.CheckSavedEpisodes, error) {
 	return c.episodeService.CheckSavedEpisodes(input)
 }
