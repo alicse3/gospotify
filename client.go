@@ -26,6 +26,7 @@ type Client struct {
 	artistService    apis.ArtistService
 	audiobookService apis.AudiobookService
 	categoryService  apis.CategoryService
+	chapterService   apis.ChapterService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -159,6 +160,7 @@ func initClient(httpClient *utils.HttpClient, authToken *models.AuthToken, crede
 		artistService:    apis.NewDefaultArtistService(httpClientWithToken),
 		audiobookService: apis.NewDefaultAudiobookService(httpClientWithToken),
 		categoryService:  apis.NewDefaultCategoryService(httpClientWithToken),
+		chapterService:   apis.NewDefaultChapterService(httpClientWithToken),
 	}
 }
 
@@ -351,4 +353,14 @@ func (c *Client) GetBrowseCategories(input models.GetBrowseCategoriesRequest) (*
 // GetBrowseCategory returns the get browse category information.
 func (c *Client) GetBrowseCategory(input models.GetBrowseCategoryRequest) (*models.Category, error) {
 	return c.categoryService.GetBrowseCategory(input)
+}
+
+// GetChapter returns the chapter information.
+func (c *Client) GetChapter(input models.GetChapterRequest) (*models.Chapter, error) {
+	return c.chapterService.GetChapter(input)
+}
+
+// GetChapters returns the chapters information.
+func (c *Client) GetChapters(input models.GetChaptersRequest) (*models.Chapters, error) {
+	return c.chapterService.GetChapters(input)
 }

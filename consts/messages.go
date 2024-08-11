@@ -53,6 +53,9 @@ const (
 	MsgFailedToGetBrowseCategories = "Failed to get Browse Categories"
 	MsgFailedToGetBrowseCategory   = "Failed to get Browse Category"
 
+	MsgFailedToGetChapter  = "Failed to get a chapter"
+	MsgFailedToGetChapters = "Failed to get chapters"
+
 	MsgIdRequired         = "ID is required"
 	MsgIdsRequired        = "IDs are required"
 	MsgCategoryIdRequired = "Category ID is required"
