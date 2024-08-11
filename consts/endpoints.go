@@ -37,4 +37,8 @@ const (
 	// Categories related endpoints
 	EndpointBrowseCategories = "/v1/browse/categories"    // Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
 	EndpointBrowseCategory   = "/v1/browse/categories/%s" // Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
+
+	// Chapters related endpoints
+	EndpointGetChapter  = "/v1/chapters/%s" // Get Spotify catalog information for a single audiobook chapter. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
+	EndpointGetChapters = "/v1/chapters"    // Get Spotify catalog information for several audiobook chapters identified by their Spotify IDs. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 )
