@@ -107,9 +107,9 @@ func (hc *HttpClient) Post(ctx context.Context, endpoint string, headers, formVa
 	return res, nil
 }
 
-// Get makes an HTTP Get request to the specified endpoint.
+// Get makes an HTTP Get request to the specified endpoint with optional query params.
 // It returns the HTTP response and any error that occurred during the request.
-func (hc *HttpClient) Get(ctx context.Context, endpoint string) (*http.Response, error) {
+func (hc *HttpClient) Get(ctx context.Context, endpoint string, queryParams map[string]string) (*http.Response, error) {
 	// Construct full url
 	fullUrl := hc.BaseUrl + endpoint
 
@@ -125,8 +125,118 @@ func (hc *HttpClient) Get(ctx context.Context, endpoint string) (*http.Response,
 		return nil, err
 	}
 
-	// Set the auth token in the request header
-	// req.Header.Set("Authorization")
+	// Set the query params in the request
+	if queryParams != nil {
+		query := req.URL.Query()
+		for key, val := range queryParams {
+			query.Add(key, val)
+		}
+		req.URL.RawQuery = query.Encode()
+	}
+
+	// Send the HTTP request and return the response and any error that occurred
+	res, err := hc.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// Return the Response
+	return res, nil
+}
+
+// Put makes an HTTP PUT request to the specified endpoint with optional headers, query params, and request body.
+// It returns the HTTP response and any error that occurred during the request.
+func (hc *HttpClient) Put(ctx context.Context, endpoint string, headers, queryParams map[string]string, body any) (*http.Response, error) {
+	// Construct full url
+	fullUrl := hc.BaseUrl + endpoint
+
+	// Parse the URL and handle any errors
+	u, err := url.ParseRequestURI(fullUrl)
+	if err != nil {
+		return nil, err
+	}
+
+	// Marshal the request body (if provided) to JSON
+	var jsonData []byte
+	if body != nil {
+		data, err := json.Marshal(body)
+		if err != nil {
+			return nil, err
+		}
+		jsonData = data
+	}
+
+	// Create a new HTTP request with the provided context, method, URL, and request body
+	req, err := http.NewRequestWithContext(ctx, http.MethodPut, u.String(), bytes.NewBuffer(jsonData))
+	if err != nil {
+		return nil, err
+	}
+
+	// Set the request headers (if provided)
+	for key, val := range headers {
+		req.Header.Set(key, val)
+	}
+
+	// Set the query params in the request
+	if queryParams != nil {
+		query := req.URL.Query()
+		for key, val := range queryParams {
+			query.Add(key, val)
+		}
+		req.URL.RawQuery = query.Encode()
+	}
+
+	// Send the HTTP request and return the response and any error that occurred
+	res, err := hc.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// Return the Response
+	return res, nil
+}
+
+// Delete makes an HTTP DELETE request to the specified endpoint with optional headers, query params, and request body.
+// It returns the HTTP response and any error that occurred during the request.
+func (hc *HttpClient) Delete(ctx context.Context, endpoint string, headers, queryParams map[string]string, body any) (*http.Response, error) {
+	// Construct full url
+	fullUrl := hc.BaseUrl + endpoint
+
+	// Parse the URL and handle any errors
+	u, err := url.ParseRequestURI(fullUrl)
+	if err != nil {
+		return nil, err
+	}
+
+	// Marshal the request body (if provided) to JSON
+	var jsonData []byte
+	if body != nil {
+		data, err := json.Marshal(body)
+		if err != nil {
+			return nil, err
+		}
+		jsonData = data
+	}
+
+	// Create a new HTTP request with the provided context, method, URL, and request body
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, u.String(), bytes.NewBuffer(jsonData))
+	if err != nil {
+		return nil, err
+	}
+
+	// Set the request headers (if provided)
+	for key, val := range headers {
+		req.Header.Set(key, val)
+	}
+
+	// Set the query params in the request
+	if queryParams != nil {
+		query := req.URL.Query()
+		for key, val := range queryParams {
+			query.Add(key, val)
+		}
+		req.URL.RawQuery = query.Encode()
+	}
 
 	// Send the HTTP request and return the response and any error that occurred
 	res, err := hc.Client.Do(req)

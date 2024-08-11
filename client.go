@@ -20,7 +20,9 @@ type Client struct {
 	AuthToken   *models.AuthToken // Auth token for authenticating requests
 	credentials *Credentials
 
-	userService apis.UserService
+	// Services to interact with Spotify api
+	userService  apis.UserService
+	albumService apis.AlbumService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -149,7 +151,8 @@ func initClient(httpClient *utils.HttpClient, authToken *models.AuthToken, crede
 		credentials: credentials,
 
 		// Intialize all services with dependencies
-		userService: apis.NewDefultUserService(httpClientWithToken),
+		userService:  apis.NewDefultUserService(httpClientWithToken),
+		albumService: apis.NewDefaultAlbumService(httpClientWithToken),
 	}
 }
 
@@ -230,4 +233,42 @@ func (c *Client) CheckAndRefreshTokens() error {
 // GetCurrentUserProfile calls user service to get current user profile.
 func (c *Client) GetCurrentUserProfile() (*models.User, error) {
 	return c.userService.GetCurrentUserProfile()
+}
+
+// GetAlbum gets the album information.
+func (c *Client) GetAlbum(input models.GetAlbumRequest) (*models.Album, error) {
+	return c.albumService.GetAlbum(input)
+}
+
+// GetAlbums gets the albums information.
+func (c *Client) GetAlbums(input models.GetAlbumsRequest) (*models.Albums, error) {
+	return c.albumService.GetAlbums(input)
+}
+
+// GetAlbumTracks gets the album tracks information.
+func (c *Client) GetAlbumTracks(input models.GetAlbumTracksRequest) (*models.Tracks, error) {
+	return c.albumService.GetAlbumTracks(input)
+}
+
+// GetSavedAlbums gets the saved albums information.
+// Rquired authorization scopes: user-library-read
+func (c *Client) GetSavedAlbums(input models.GetSavedAlbumsRequest) (*models.SavedAlbums, error) {
+	return c.albumService.GetSavedAlbums(input)
+}
+
+// SaveAlbums saves the albums information.
+// Rquired authorization scopes: user-library-modify
+func (c *Client) SaveAlbums(input models.SaveAlbumsRequest) error {
+	return c.albumService.SaveAlbums(input)
+}
+
+// CheckSavedAlbums checks and returns the saved albums information.
+// Rquired authorization scopes: user-library-read
+func (c *Client) CheckSavedAlbums(input models.CheckSavedAlbumsRequest) (*models.CheckSavedAlbums, error) {
+	return c.albumService.CheckSavedAlbums(input)
+}
+
+// GetNewReleases returns the new releases information.
+func (c *Client) GetNewReleases(input models.GetNewReleasesRequest) (*models.NewlyReleasedAlbums, error) {
+	return c.albumService.GetNewReleases(input)
 }

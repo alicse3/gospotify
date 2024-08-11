@@ -27,6 +27,17 @@ const (
 	MsgFailedToUnmarshalResponseData = "Failed to unmarshal response data"
 
 	MsgFailedToGetCurrentUserProfile = "Failed to get current user profile"
+	MsgFailedToGetAlbum              = "Failed to get an Album"
+	MsgFailedToGetAlbums             = "Failed to get Albums"
+	MsgFailedToGetTracks             = "Failed to get Tracks"
+	MsgFailedToSaveAlbums            = "Failed to save Albums"
+	MsgFailedToRemoveAlbums          = "Failed to remove Albums"
+	MsgFailedToGetSavedAlbums        = "Failed to get Saved Albums"
+	MsgFailedToCheckSavedAlbums      = "Failed to check Saved Albums"
+	MsgFailedToGetNewReleases        = "Failed to get New Releases"
+
+	MsgIdRequired  = "ID is required"
+	MsgIdsRequired = "IDs are required"
 
 	MsgUnsupportedPlatform = "unsupported platform"
 	MsgUknownErrorType     = "Unknown error type"
