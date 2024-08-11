@@ -67,6 +67,8 @@ const (
 	MsgFailedToRemoveEpisodes     = "Failed to remove Episodes"
 	MsgFailedToCheckSavedEpisodes = "Failed to check saved Episodes"
 
+	MsgFailedToGetAvailableGenreSeeds = "Failed to get Available Genre Seeds"
+
 	MsgUnsupportedPlatform = "unsupported platform"
 	MsgUknownErrorType     = "Unknown error type"
 

@@ -28,6 +28,7 @@ type Client struct {
 	categoryService  apis.CategoryService
 	chapterService   apis.ChapterService
 	episodeService   apis.EpisodeService
+	genreService     apis.GenreService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -163,6 +164,7 @@ func initClient(httpClient *utils.HttpClient, authToken *models.AuthToken, crede
 		categoryService:  apis.NewDefaultCategoryService(httpClientWithToken),
 		chapterService:   apis.NewDefaultChapterService(httpClientWithToken),
 		episodeService:   apis.NewDefaultEpisodeService(httpClientWithToken),
+		genreService:     apis.NewDefaultGenreService(httpClientWithToken),
 	}
 }
 
@@ -395,4 +397,9 @@ func (c *Client) RemoveEpisodes(input models.RemoveEpisodesRequest) error {
 // CheckSavedEpisodes checks the saved episodes information.
 func (c *Client) CheckSavedEpisodes(input models.CheckSavedEpisodesRequest) (*models.CheckSavedEpisodes, error) {
 	return c.episodeService.CheckSavedEpisodes(input)
+}
+
+// GetAvailableGenresSeeds returns the available genres seeds information.
+func (c *Client) GetAvailableGenresSeeds() (*models.Genres, error) {
+	return c.genreService.GetAvailableGenresSeeds()
 }
