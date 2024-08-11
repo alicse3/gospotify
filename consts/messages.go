@@ -69,6 +69,8 @@ const (
 
 	MsgFailedToGetAvailableGenreSeeds = "Failed to get Available Genre Seeds"
 
+	MsgFailedToGetAvailableMarkets = "Failed to get Available Markets"
+
 	MsgUnsupportedPlatform = "unsupported platform"
 	MsgUknownErrorType     = "Unknown error type"
 
