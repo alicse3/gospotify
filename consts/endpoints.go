@@ -19,4 +19,11 @@ const (
 	EndpointMyAlbums      = "/v1/me/albums"           // To work with the current Spotify user's 'Your Music' library.
 	EndpointCheckMyAlbums = "/v1/me/albums/contains"  // Check if one or more albums is already saved in the current Spotify user's 'Your Music' library.
 	EndpointNewReleases   = "/v1/browse/new-releases" // Get a list of new album releases featured in Spotify.
+
+	// Artists related endpoints
+	EndpointArtist          = "/v1/artists/%s"                 // Get Spotify catalog information for a single artist identified by their unique Spotify ID.
+	EndpointArtists         = "/v1/artists"                    // Get Spotify catalog information for several artists based on their Spotify IDs.
+	EndpointArtistAlbums    = "/v1/artists/%s/albums"          // Get Spotify catalog information about an artist's albums.
+	EndpointArtistTopTracks = "/v1/artists/%s/top-tracks"      // Get Spotify catalog information about an artist's top tracks by country.
+	EndpointRelatedArtists  = "/v1/artists/%s/related-artists" // Get Spotify catalog information about artists similar to a given artist. Similarity is based on analysis of the Spotify community's listening history.
 )
