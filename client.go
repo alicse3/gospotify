@@ -21,8 +21,9 @@ type Client struct {
 	credentials *Credentials
 
 	// Services to interact with Spotify api
-	userService  apis.UserService
-	albumService apis.AlbumService
+	userService   apis.UserService
+	albumService  apis.AlbumService
+	artistService apis.ArtistService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -151,8 +152,9 @@ func initClient(httpClient *utils.HttpClient, authToken *models.AuthToken, crede
 		credentials: credentials,
 
 		// Intialize all services with dependencies
-		userService:  apis.NewDefultUserService(httpClientWithToken),
-		albumService: apis.NewDefaultAlbumService(httpClientWithToken),
+		userService:   apis.NewDefultUserService(httpClientWithToken),
+		albumService:  apis.NewDefaultAlbumService(httpClientWithToken),
+		artistService: apis.NewDefaultArtistService(httpClientWithToken),
 	}
 }
 
@@ -271,4 +273,29 @@ func (c *Client) CheckSavedAlbums(input models.CheckSavedAlbumsRequest) (*models
 // GetNewReleases returns the new releases information.
 func (c *Client) GetNewReleases(input models.GetNewReleasesRequest) (*models.NewlyReleasedAlbums, error) {
 	return c.albumService.GetNewReleases(input)
+}
+
+// GetArtist returns the artist information.
+func (c *Client) GetArtist(input models.GetArtistRequest) (*models.Artist, error) {
+	return c.artistService.GetArtist(input)
+}
+
+// GetArtists returns the artists information.
+func (c *Client) GetArtists(input models.GetArtistsRequest) (*models.Artists, error) {
+	return c.artistService.GetArtists(input)
+}
+
+// GetArtistAlbums returns the artist albums information.
+func (c *Client) GetArtistAlbums(input models.GetArtistAlbumsRequest) (*models.ArtistAlbums, error) {
+	return c.artistService.GetArtistAlbums(input)
+}
+
+// GetArtistTopTracks returns the artists top tracks information.
+func (c *Client) GetArtistTopTracks(input models.GetArtistTopTracksRequest) (*models.ArtistTopTracks, error) {
+	return c.artistService.GetArtistTopTracks(input)
+}
+
+// GetRelatedArtists returns the related artists information.
+func (c *Client) GetRelatedArtists(input models.GetRelatedArtistsRequest) (*models.Artists, error) {
+	return c.artistService.GetRelatedArtists(input)
 }
