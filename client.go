@@ -21,9 +21,10 @@ type Client struct {
 	credentials *Credentials
 
 	// Services to interact with Spotify api
-	userService   apis.UserService
-	albumService  apis.AlbumService
-	artistService apis.ArtistService
+	userService      apis.UserService
+	albumService     apis.AlbumService
+	artistService    apis.ArtistService
+	audiobookService apis.AudiobookService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -152,9 +153,10 @@ func initClient(httpClient *utils.HttpClient, authToken *models.AuthToken, crede
 		credentials: credentials,
 
 		// Intialize all services with dependencies
-		userService:   apis.NewDefultUserService(httpClientWithToken),
-		albumService:  apis.NewDefaultAlbumService(httpClientWithToken),
-		artistService: apis.NewDefaultArtistService(httpClientWithToken),
+		userService:      apis.NewDefultUserService(httpClientWithToken),
+		albumService:     apis.NewDefaultAlbumService(httpClientWithToken),
+		artistService:    apis.NewDefaultArtistService(httpClientWithToken),
+		audiobookService: apis.NewDefaultAudiobookService(httpClientWithToken),
 	}
 }
 
@@ -298,4 +300,43 @@ func (c *Client) GetArtistTopTracks(input models.GetArtistTopTracksRequest) (*mo
 // GetRelatedArtists returns the related artists information.
 func (c *Client) GetRelatedArtists(input models.GetRelatedArtistsRequest) (*models.Artists, error) {
 	return c.artistService.GetRelatedArtists(input)
+}
+
+// GetAudiobook returns the audiobook information.
+func (c *Client) GetAudiobook(input models.GetAudiobookRequest) (*models.Audiobook, error) {
+	return c.audiobookService.GetAudiobook(input)
+}
+
+// GetAudiobooks returns the audiobooks information.
+func (c *Client) GetAudiobooks(input models.GetAudiobooksRequest) (*models.Audiobooks, error) {
+	return c.audiobookService.GetAudiobooks(input)
+}
+
+// GetAudiobookChapters returns the audiobooks chapters information.
+func (c *Client) GetAudiobookChapters(input models.GetAudiobookChaptersRequest) (*models.AudiobookChapters, error) {
+	return c.audiobookService.GetAudiobookChapters(input)
+}
+
+// GetSavedAudiobooks returns the saved audiobooks information.
+// Rquired authorization scopes: user-library-read
+func (c *Client) GetSavedAudiobooks(input models.GetSavedAudiobooksRequest) (*models.SavedAudiobooks, error) {
+	return c.audiobookService.GetSavedAudiobooks(input)
+}
+
+// SaveAudiobooks saves the audiobooks information.
+// Rquired authorization scopes: user-library-modify
+func (c *Client) SaveAudiobooks(input models.SaveAudiobooksRequest) error {
+	return c.audiobookService.SaveAudiobooks(input)
+}
+
+// DeleteAudiobooks deletes the audiobooks information.
+// Rquired authorization scopes: user-library-modify
+func (c *Client) DeleteAudiobooks(input models.RemoveAudiobooksRequest) error {
+	return c.audiobookService.DeleteAudiobooks(input)
+}
+
+// CheckSavedAudiobooks returns the check saved audiobooks information.
+// Rquired authorization scopes: user-library-read
+func (c *Client) CheckSavedAudiobooks(input models.CheckSavedAudiobooksRequest) (*models.CheckSavedAudiobooks, error) {
+	return c.audiobookService.CheckSavedAudiobooks(input)
 }
