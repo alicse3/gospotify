@@ -27,6 +27,7 @@ type Client struct {
 	audiobookService apis.AudiobookService
 	categoryService  apis.CategoryService
 	chapterService   apis.ChapterService
+	episodeService   apis.EpisodeService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -161,6 +162,7 @@ func initClient(httpClient *utils.HttpClient, authToken *models.AuthToken, crede
 		audiobookService: apis.NewDefaultAudiobookService(httpClientWithToken),
 		categoryService:  apis.NewDefaultCategoryService(httpClientWithToken),
 		chapterService:   apis.NewDefaultChapterService(httpClientWithToken),
+		episodeService:   apis.NewDefaultEpisodeService(httpClientWithToken),
 	}
 }
 
@@ -363,4 +365,34 @@ func (c *Client) GetChapter(input models.GetChapterRequest) (*models.Chapter, er
 // GetChapters returns the chapters information.
 func (c *Client) GetChapters(input models.GetChaptersRequest) (*models.Chapters, error) {
 	return c.chapterService.GetChapters(input)
+}
+
+// GetEpisode returns the episode information.
+func (c *Client) GetEpisode(input models.GetEpisodeRequest) (*models.Episode, error) {
+	return c.episodeService.GetEpisode(input)
+}
+
+// GetEpisodes returns the episodes information.
+func (c *Client) GetEpisodes(input models.GetEpisodesRequest) (*models.Episodes, error) {
+	return c.episodeService.GetEpisodes(input)
+}
+
+// GetSavedEpisodes returns the saved episodes information.
+func (c *Client) GetSavedEpisodes(input models.GetSavedEpisodesRequest) (*models.SavedEpisodes, error) {
+	return c.episodeService.GetSavedEpisodes(input)
+}
+
+// SaveEpisodes saves the episodes information.
+func (c *Client) SaveEpisodes(input models.SaveEpisodesRequest) error {
+	return c.episodeService.SaveEpisodes(input)
+}
+
+// RemoveEpisodes removes the episodes information.
+func (c *Client) RemoveEpisodes(input models.RemoveEpisodesRequest) error {
+	return c.episodeService.RemoveEpisodes(input)
+}
+
+// CheckSavedEpisodes checks the saved episodes information.
+func (c *Client) CheckSavedEpisodes(input models.CheckSavedEpisodesRequest) (*models.CheckSavedEpisodes, error) {
+	return c.episodeService.CheckSavedEpisodes(input)
 }
