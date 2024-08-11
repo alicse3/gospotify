@@ -25,6 +25,7 @@ type Client struct {
 	albumService     apis.AlbumService
 	artistService    apis.ArtistService
 	audiobookService apis.AudiobookService
+	categoryService  apis.CategoryService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -157,6 +158,7 @@ func initClient(httpClient *utils.HttpClient, authToken *models.AuthToken, crede
 		albumService:     apis.NewDefaultAlbumService(httpClientWithToken),
 		artistService:    apis.NewDefaultArtistService(httpClientWithToken),
 		audiobookService: apis.NewDefaultAudiobookService(httpClientWithToken),
+		categoryService:  apis.NewDefaultCategoryService(httpClientWithToken),
 	}
 }
 
@@ -339,4 +341,14 @@ func (c *Client) DeleteAudiobooks(input models.RemoveAudiobooksRequest) error {
 // Rquired authorization scopes: user-library-read
 func (c *Client) CheckSavedAudiobooks(input models.CheckSavedAudiobooksRequest) (*models.CheckSavedAudiobooks, error) {
 	return c.audiobookService.CheckSavedAudiobooks(input)
+}
+
+// GetBrowseCategories returns the get browse categories information.
+func (c *Client) GetBrowseCategories(input models.GetBrowseCategoriesRequest) (*models.Categories, error) {
+	return c.categoryService.GetBrowseCategories(input)
+}
+
+// GetBrowseCategory returns the get browse category information.
+func (c *Client) GetBrowseCategory(input models.GetBrowseCategoryRequest) (*models.Category, error) {
+	return c.categoryService.GetBrowseCategory(input)
 }

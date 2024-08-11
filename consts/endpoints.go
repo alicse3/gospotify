@@ -33,4 +33,8 @@ const (
 	EndpointAudiobookChapters = "/v1/audiobooks/%s/chapters" // Get Spotify catalog information about an audiobook's chapters. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	EndpointMyAudiobooks      = "/v1/me/audiobooks"          // To work with the the audiobooks saved in the current Spotify user's 'Your Music' library.
 	EndpointMySavedAudiobooks = "/v1/me/audiobooks/contains" // Check if one or more audiobooks are already saved in the current Spotify user's library.
+
+	// Categories related endpoints
+	EndpointBrowseCategories = "/v1/browse/categories"    // Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
+	EndpointBrowseCategory   = "/v1/browse/categories/%s" // Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
 )
