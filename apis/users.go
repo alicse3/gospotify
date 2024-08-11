@@ -16,7 +16,7 @@ type UserService interface {
 	GetCurrentUserProfile() (*models.User, error)
 }
 
-// DefaultUserService is a struct that implements DefaultUserService interface.
+// DefaultUserService is a struct that implements UserService interface.
 type DefaultUserService struct {
 	client *utils.HttpClient
 }
@@ -29,7 +29,7 @@ func NewDefultUserService(client *utils.HttpClient) *DefaultUserService {
 // GetCurrentUserProfile implements one of the UserService interface methods.
 func (dus *DefaultUserService) GetCurrentUserProfile() (*models.User, error) {
 	// Make a Get call
-	res, err := dus.client.Get(context.Background(), consts.EndpointMe)
+	res, err := dus.client.Get(context.Background(), consts.EndpointMe, nil)
 	if err != nil {
 		return nil, &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToGetCurrentUserProfile, Err: err}
 	}
@@ -53,5 +53,5 @@ func (dus *DefaultUserService) GetCurrentUserProfile() (*models.User, error) {
 	}
 
 	// Return the User
-	return &user, err
+	return &user, nil
 }
