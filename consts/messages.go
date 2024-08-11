@@ -43,6 +43,13 @@ const (
 	MsgFailedToGetArtistTopTracks = "Failed to get Artist Top Tracks"
 	MsgFailedToGetRelatedArtists  = "Failed to get Related Artists"
 
+	MsgFailedToGetAudiobook         = "Failed to get an Audiobook"
+	MsgFailedToGetAudiobooks        = "Failed to get Audiobooks"
+	MsgFailedToGetAudiobookChapters = "Failed to get Audiobook chapters"
+	MsgFailedToGetSavedAudiobooks   = "Failed to get saves Audiobooks"
+	MsgFailedToSaveAudiobooks       = "Failed to save Audiobooks"
+	MsgFailedToCheckSavedAudiobooks = "Failed to check saved Audiobooks"
+
 	MsgIdRequired  = "ID is required"
 	MsgIdsRequired = "IDs are required"
 
