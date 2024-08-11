@@ -60,6 +60,13 @@ const (
 	MsgIdsRequired        = "IDs are required"
 	MsgCategoryIdRequired = "Category ID is required"
 
+	MsgFailedToGetEpisode         = "Failed to get an Episode"
+	MsgFailedToGetEpisodes        = "Failed to get Episodes"
+	MsgFailedToGetSavedEpisodes   = "Failed to get saved Episodes"
+	MsgFailedToSaveEpisodes       = "Failed to save Episodes"
+	MsgFailedToRemoveEpisodes     = "Failed to remove Episodes"
+	MsgFailedToCheckSavedEpisodes = "Failed to check saved Episodes"
+
 	MsgUnsupportedPlatform = "unsupported platform"
 	MsgUknownErrorType     = "Unknown error type"
 

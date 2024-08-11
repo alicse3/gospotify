@@ -31,7 +31,7 @@ const (
 	EndpointAudiobook         = "/v1/audiobooks/%s"          // Get Spotify catalog information for a single audiobook. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	EndpointAudiobooks        = "/v1/audiobooks"             // Get Spotify catalog information for several audiobooks identified by their Spotify IDs. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	EndpointAudiobookChapters = "/v1/audiobooks/%s/chapters" // Get Spotify catalog information about an audiobook's chapters. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
-	EndpointMyAudiobooks      = "/v1/me/audiobooks"          // To work with the the audiobooks saved in the current Spotify user's 'Your Music' library.
+	EndpointMyAudiobooks      = "/v1/me/audiobooks"          // To work with the audiobooks saved in the current Spotify user's 'Your Music' library.
 	EndpointMySavedAudiobooks = "/v1/me/audiobooks/contains" // Check if one or more audiobooks are already saved in the current Spotify user's library.
 
 	// Categories related endpoints
@@ -41,4 +41,10 @@ const (
 	// Chapters related endpoints
 	EndpointGetChapter  = "/v1/chapters/%s" // Get Spotify catalog information for a single audiobook chapter. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	EndpointGetChapters = "/v1/chapters"    // Get Spotify catalog information for several audiobook chapters identified by their Spotify IDs. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
+
+	// Episodes related endpoints
+	EndpointEpisode         = "/v1/episodes/%s"          // Get Spotify catalog information for a single episode identified by its unique Spotify ID.
+	EndpointEpisodes        = "/v1/episodes"             // A comma-separated list of the Spotify IDs for the episodes. Maximum: 50 IDs.
+	EndpointMyEpisodes      = "/v1/me/episodes"          // To work with the list of episodes in the current Spotify user's library.
+	EndpointCheckMyEpisodes = "/v1/me/episodes/contains" // Check if one or more episodes is already saved in the current Spotify user's 'Your Episodes' library.
 )
