@@ -50,8 +50,12 @@ const (
 	MsgFailedToSaveAudiobooks       = "Failed to save Audiobooks"
 	MsgFailedToCheckSavedAudiobooks = "Failed to check saved Audiobooks"
 
-	MsgIdRequired  = "ID is required"
-	MsgIdsRequired = "IDs are required"
+	MsgFailedToGetBrowseCategories = "Failed to get Browse Categories"
+	MsgFailedToGetBrowseCategory   = "Failed to get Browse Category"
+
+	MsgIdRequired         = "ID is required"
+	MsgIdsRequired        = "IDs are required"
+	MsgCategoryIdRequired = "Category ID is required"
 
 	MsgUnsupportedPlatform = "unsupported platform"
 	MsgUknownErrorType     = "Unknown error type"
