@@ -35,7 +35,7 @@ func NewDefaultAlbumService(client *utils.HttpClient) *DefaultAlbumService {
 	return &DefaultAlbumService{client}
 }
 
-// GetAlbum implements th AlbumService's interface GetAlbum method.
+// GetAlbum implements the AlbumService's interface GetAlbum method.
 func (service *DefaultAlbumService) GetAlbum(input models.GetAlbumRequest) (*models.Album, error) {
 	// Validate the input
 	if input.Id == "" {
@@ -213,7 +213,7 @@ func (service *DefaultAlbumService) SaveAlbums(input models.SaveAlbumsRequest) e
 	return nil
 }
 
-// SaveAlbums implements the AlbumService's interface RemoveAlbums method.
+// RemoveAlbums implements the AlbumService's interface RemoveAlbums method.
 func (service *DefaultAlbumService) RemoveAlbums(input models.RemoveAlbumsRequest) error {
 	// Validate the input
 	if input.Ids == "" {
@@ -238,7 +238,7 @@ func (service *DefaultAlbumService) RemoveAlbums(input models.RemoveAlbumsReques
 	return nil
 }
 
-// SaveAlbums implements the AlbumService's interface CheckSavedAlbums method.
+// CheckSavedAlbums implements the AlbumService's interface CheckSavedAlbums method.
 func (service *DefaultAlbumService) CheckSavedAlbums(input models.CheckSavedAlbumsRequest) (*models.CheckSavedAlbums, error) {
 	// Validate the input
 	if input.Ids == "" {
@@ -276,7 +276,7 @@ func (service *DefaultAlbumService) CheckSavedAlbums(input models.CheckSavedAlbu
 	return &checkSavedAlbums, nil
 }
 
-// SaveAlbums implements the AlbumService's interface GetNewReleases method.
+// GetNewReleases implements the AlbumService's interface GetNewReleases method.
 func (service *DefaultAlbumService) GetNewReleases(input models.GetNewReleasesRequest) (*models.NewlyReleasedAlbums, error) {
 	// Add inputs to the query parameters
 	params := map[string]string{"limit": strconv.Itoa(input.Limit), "offset": strconv.Itoa(input.Offset)}
