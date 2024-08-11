@@ -47,4 +47,7 @@ const (
 	EndpointEpisodes        = "/v1/episodes"             // A comma-separated list of the Spotify IDs for the episodes. Maximum: 50 IDs.
 	EndpointMyEpisodes      = "/v1/me/episodes"          // To work with the list of episodes in the current Spotify user's library.
 	EndpointCheckMyEpisodes = "/v1/me/episodes/contains" // Check if one or more episodes is already saved in the current Spotify user's 'Your Episodes' library.
+
+	// Genres related endpoints
+	EndpointGetAvailableGenreSeeds = "/v1/recommendations/available-genre-seeds" // Retrieve a list of available genres seed parameter values for recommendations.
 )
