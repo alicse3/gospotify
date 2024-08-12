@@ -8,7 +8,6 @@ const (
 const (
 	EndpointAuthorize = "/authorize" // Spotify authorization endpoint.
 	EndpointToken     = "/api/token" // Spotify token endpoint.
-	EndpointRefresh   = "/refresh"   // Spotify refresh endpoint.
 
 	EndpointMe = "/v1/me" // Get detailed profile information about the current user (including the current user's username).
 

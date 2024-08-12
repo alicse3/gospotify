@@ -3,10 +3,17 @@ package utils
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
 	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 	"net/url"
+	"sync"
 	"time"
+
+	"github.com/alicse3/gospotify/consts"
+	"github.com/alicse3/gospotify/models"
 )
 
 const (
@@ -17,54 +24,131 @@ const (
 // HttpClient is a struct that wraps the standard http.Client
 // and provides a convenient way to make HTTP requests with a base URL.
 type HttpClient struct {
-	Client  *http.Client
-	BaseUrl string // Base for api requests
+	client      *http.Client      // Client for making HTTP requests
+	baseUrl     string            // Base url for api requests
+	authToken   *models.AuthToken // Auth token for authenticating requests
+	credentials *Credentials      // For refreshing the tokens
+	mu          sync.Mutex
 }
 
 // NewHttpClient returns a new HttpClient instance with a default timeout of 10 seconds.
 func NewHttpClient(baseUrl string) *HttpClient {
 	return &HttpClient{
-		Client:  &http.Client{Timeout: defaultHttpClientTimeout},
-		BaseUrl: baseUrl,
+		client:  &http.Client{Timeout: defaultHttpClientTimeout},
+		baseUrl: baseUrl,
 	}
 }
 
-// TokenTransport is a struct that adds a Bearer token to the Authorization header of each HTTP request.
-type TokenTransport struct {
-	Token     string
-	Transport http.RoundTripper
-}
-
-// RoundTrip adds the Authorization header to each request
-func (tt *TokenTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Set("Authorization", "Bearer "+tt.Token)
-	return tt.Transport.RoundTrip(req)
-}
-
-// NewHttpClientWithToken creates an http.Client with the token injected into each request.
-func NewHttpClientWithToken(baseUrl, token string) *HttpClient {
+// NewHttpClientWithToken creates an httpClient instance with the given dependencies.
+func NewHttpClientWithToken(baseUrl string, authToken *models.AuthToken, credentials *Credentials) *HttpClient {
 	return &HttpClient{
-		Client: &http.Client{
-			Timeout: defaultHttpClientTimeout,
-			Transport: &TokenTransport{
-				Token:     token,
-				Transport: http.DefaultTransport,
-			},
-		},
-		BaseUrl: baseUrl,
+		client:      &http.Client{Timeout: defaultHttpClientTimeout},
+		baseUrl:     baseUrl,
+		authToken:   authToken,
+		credentials: credentials,
 	}
+}
+
+// refreshToken refreshes the access token using the refresh token.
+func (hc *HttpClient) refreshToken() error {
+	// To make sure the dependencies are initialized before refreshing the tokens
+	if hc.credentials == nil {
+		return &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgCredentialsNotInitialized}}
+	}
+
+	// Generating base64 endoded(client id and client secret) string for authorization.
+	// For details, visit: https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens
+	base64Encoded := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", hc.credentials.ClientId, hc.credentials.ClientSecret)))
+
+	// Set the required headers
+	headers := map[string]string{
+		"Content-Type":  "application/x-www-form-urlencoded",
+		"Authorization": "Basic " + base64Encoded, // As per the Spotify document, this is only required for the Authorization Code
+	}
+
+	// Set the form values for the token refresh request
+	formValues := map[string]string{
+		"grant_type":    "refresh_token",
+		"refresh_token": hc.authToken.RefreshToken,
+	}
+
+	// Make a POST request to the token endpoint
+	res, err := hc.Post(context.Background(), consts.EndpointToken, headers, nil, formValues, nil)
+	if err != nil {
+		return &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToRefreshTokens, Err: err}
+	}
+
+	// Handle Spotify API error
+	if res.StatusCode != http.StatusOK {
+		return ParseSpotifyError(res, AuthErrorType)
+	}
+
+	// Read the response body
+	data, err := io.ReadAll(res.Body)
+	if err != nil {
+		return &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToReadResponseBody, Err: err}
+	}
+	defer res.Body.Close()
+
+	// Unmarshal the response data into an AuthToken struct
+	var authToken models.AuthToken
+	if err := json.Unmarshal(data, &authToken); err != nil {
+		return &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToUnmarshalResponseData, Err: err}
+	}
+
+	// Update the client's authToken except the refreshToken
+	// Not updating the refresh token, because the Spotify's refresh tokens do not expire by default unless they are explicitly revoked by the user or by Spotify.
+	hc.authToken.AccessToken = authToken.AccessToken
+	hc.authToken.TokenType = authToken.TokenType
+	hc.authToken.ExpiresIn = authToken.ExpiresIn
+	hc.authToken.Scope = authToken.Scope
+	hc.authToken.SetExpiryTime()
+
+	return nil
+}
+
+// checkAndRefreshTokens checks for the AuthToken expiry and then triggers refresh tokens call if needed.
+func (hc *HttpClient) checkAndRefreshTokens() error {
+	hc.mu.Lock()
+	defer hc.mu.Unlock()
+
+	// Check if the token has expired
+	if hc.authToken.IsExpired() {
+		// Refresh the token
+		if err := hc.refreshToken(); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// do sends an HTTP request and automatically handles token expiration.
+func (hc *HttpClient) do(req *http.Request) (*http.Response, error) {
+	// If auth token is set, check and refresh the token if needed
+	if hc.authToken != nil {
+		if err := hc.checkAndRefreshTokens(); err != nil {
+			return nil, err
+		}
+
+		// Add the access token to the Authorization header
+		req.Header.Set("Authorization", "Bearer "+hc.authToken.AccessToken)
+	}
+
+	// Send the request
+	return hc.client.Do(req)
 }
 
 // Post makes an HTTP POST request to the specified endpoint with optional headers, query params, form values, and request body.
 // It returns the HTTP response and any error that occurred during the request.
 func (hc *HttpClient) Post(ctx context.Context, endpoint string, headers, queryParams, formValues map[string]string, body any) (*http.Response, error) {
 	// Construct full url
-	fullUrl := hc.BaseUrl + endpoint
+	fullUrl := hc.baseUrl + endpoint
 
 	// Parse the URL and handle any errors
 	u, err := url.ParseRequestURI(fullUrl)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToParseUrl, Err: err}}
 	}
 
 	// Marshal the request body (if provided) to JSON
@@ -72,7 +156,7 @@ func (hc *HttpClient) Post(ctx context.Context, endpoint string, headers, queryP
 	if body != nil {
 		data, err := json.Marshal(body)
 		if err != nil {
-			return nil, err
+			return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToMarshalRequestData, Err: err}}
 		}
 		jsonData = data
 	}
@@ -89,7 +173,7 @@ func (hc *HttpClient) Post(ctx context.Context, endpoint string, headers, queryP
 	// Create a new HTTP request with the provided context, method, URL, and request body
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, u.String(), bytes.NewBuffer(jsonData))
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToCreatePostRequest, Err: err}}
 	}
 
 	// Set the request headers (if provided)
@@ -107,9 +191,9 @@ func (hc *HttpClient) Post(ctx context.Context, endpoint string, headers, queryP
 	}
 
 	// Send the HTTP request and return the response and any error that occurred
-	res, err := hc.Client.Do(req)
+	res, err := hc.do(req)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToSendRequest, Err: err}}
 	}
 
 	// Return the Response
@@ -120,18 +204,18 @@ func (hc *HttpClient) Post(ctx context.Context, endpoint string, headers, queryP
 // It returns the HTTP response and any error that occurred during the request.
 func (hc *HttpClient) Get(ctx context.Context, endpoint string, queryParams map[string]string) (*http.Response, error) {
 	// Construct full url
-	fullUrl := hc.BaseUrl + endpoint
+	fullUrl := hc.baseUrl + endpoint
 
 	// Parse the URL and handle any errors
 	u, err := url.ParseRequestURI(fullUrl)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToParseUrl, Err: err}}
 	}
 
 	// Create a new HTTP request with the provided context, method, and request URL
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToCreateGetRequest, Err: err}}
 	}
 
 	// Set the query params in the request
@@ -144,9 +228,9 @@ func (hc *HttpClient) Get(ctx context.Context, endpoint string, queryParams map[
 	}
 
 	// Send the HTTP request and return the response and any error that occurred
-	res, err := hc.Client.Do(req)
+	res, err := hc.do(req)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToSendRequest, Err: err}}
 	}
 
 	// Return the Response
@@ -157,12 +241,12 @@ func (hc *HttpClient) Get(ctx context.Context, endpoint string, queryParams map[
 // It returns the HTTP response and any error that occurred during the request.
 func (hc *HttpClient) Put(ctx context.Context, endpoint string, headers, queryParams map[string]string, body any) (*http.Response, error) {
 	// Construct full url
-	fullUrl := hc.BaseUrl + endpoint
+	fullUrl := hc.baseUrl + endpoint
 
 	// Parse the URL and handle any errors
 	u, err := url.ParseRequestURI(fullUrl)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToParseUrl, Err: err}}
 	}
 
 	// Marshal the request body (if provided) to JSON
@@ -170,7 +254,7 @@ func (hc *HttpClient) Put(ctx context.Context, endpoint string, headers, queryPa
 	if body != nil {
 		data, err := json.Marshal(body)
 		if err != nil {
-			return nil, err
+			return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToMarshalRequestData, Err: err}}
 		}
 		jsonData = data
 	}
@@ -178,7 +262,7 @@ func (hc *HttpClient) Put(ctx context.Context, endpoint string, headers, queryPa
 	// Create a new HTTP request with the provided context, method, URL, and request body
 	req, err := http.NewRequestWithContext(ctx, http.MethodPut, u.String(), bytes.NewBuffer(jsonData))
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToCreatePutRequest, Err: err}}
 	}
 
 	// Set the request headers (if provided)
@@ -196,9 +280,9 @@ func (hc *HttpClient) Put(ctx context.Context, endpoint string, headers, queryPa
 	}
 
 	// Send the HTTP request and return the response and any error that occurred
-	res, err := hc.Client.Do(req)
+	res, err := hc.do(req)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToSendRequest, Err: err}}
 	}
 
 	// Return the Response
@@ -209,12 +293,12 @@ func (hc *HttpClient) Put(ctx context.Context, endpoint string, headers, queryPa
 // It returns the HTTP response and any error that occurred during the request.
 func (hc *HttpClient) Delete(ctx context.Context, endpoint string, headers, queryParams map[string]string, body any) (*http.Response, error) {
 	// Construct full url
-	fullUrl := hc.BaseUrl + endpoint
+	fullUrl := hc.baseUrl + endpoint
 
 	// Parse the URL and handle any errors
 	u, err := url.ParseRequestURI(fullUrl)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToParseUrl, Err: err}}
 	}
 
 	// Marshal the request body (if provided) to JSON
@@ -222,7 +306,7 @@ func (hc *HttpClient) Delete(ctx context.Context, endpoint string, headers, quer
 	if body != nil {
 		data, err := json.Marshal(body)
 		if err != nil {
-			return nil, err
+			return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToMarshalRequestData, Err: err}}
 		}
 		jsonData = data
 	}
@@ -230,7 +314,7 @@ func (hc *HttpClient) Delete(ctx context.Context, endpoint string, headers, quer
 	// Create a new HTTP request with the provided context, method, URL, and request body
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, u.String(), bytes.NewBuffer(jsonData))
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToCreateDeleteRequest, Err: err}}
 	}
 
 	// Set the request headers (if provided)
@@ -248,9 +332,9 @@ func (hc *HttpClient) Delete(ctx context.Context, endpoint string, headers, quer
 	}
 
 	// Send the HTTP request and return the response and any error that occurred
-	res, err := hc.Client.Do(req)
+	res, err := hc.do(req)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToSendRequest, Err: err}}
 	}
 
 	// Return the Response

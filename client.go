@@ -2,11 +2,8 @@ package gospotify
 
 import (
 	"context"
-	"encoding/json"
-	"io"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/alicse3/gospotify/apis"
 	"github.com/alicse3/gospotify/consts"
@@ -16,10 +13,6 @@ import (
 
 // Client represents the Spotify API client.
 type Client struct {
-	httpClient  *utils.HttpClient // Client for making HTTP requests
-	authToken   *models.AuthToken // Auth token for authenticating requests
-	credentials *Credentials      // For refreshing the tokens
-
 	// Services to interact with Spotify api
 	UserService      apis.UserService
 	AlbumService     apis.AlbumService
@@ -35,16 +28,16 @@ type Client struct {
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
 // It throws an error if there are any.
-func GetCredentialsFromEnv() (*Credentials, error) {
+func GetCredentialsFromEnv() (*utils.Credentials, error) {
 	// Get SPOTIFY_CLIENT_ID value from env
-	cliendId := os.Getenv(consts.EnvClientId)
-	if cliendId == "" {
+	clientId := os.Getenv(consts.EnvClientId)
+	if clientId == "" {
 		return nil, &utils.Error{Type: utils.AppErrorType, AppError: &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgClientIdNotFound}}
 	}
 
 	// Get SPOTIFY_CLIENT_SECRET value from env
-	cliendSecret := os.Getenv(consts.EnvClientSecret)
-	if cliendSecret == "" {
+	clientSecret := os.Getenv(consts.EnvClientSecret)
+	if clientSecret == "" {
 		return nil, &utils.Error{Type: utils.AppErrorType, AppError: &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgClientSecretNotFound}}
 	}
 
@@ -54,7 +47,7 @@ func GetCredentialsFromEnv() (*Credentials, error) {
 		return nil, &utils.Error{Type: utils.AppErrorType, AppError: &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgRedirectUrlNotFound}}
 	}
 
-	return &Credentials{ClientId: cliendId, ClientSecret: cliendSecret, RedirectUrl: redirectUrl}, nil
+	return &utils.Credentials{ClientId: clientId, ClientSecret: clientSecret, RedirectUrl: redirectUrl}, nil
 }
 
 // DefaultClient initializes and returns a new Spotify client.
@@ -78,7 +71,7 @@ func DefaultClientWithCustomScopes(scopes []string) (*Client, error) {
 }
 
 // NewClient initializes and returns a new Spotify client.
-func NewClient(credentials *Credentials) (*Client, error) {
+func NewClient(credentials *utils.Credentials) (*Client, error) {
 	return NewClientWithDependencies(credentials, &utils.DefaultStateGenerator{}, &utils.DefaultHttpServer{}, utils.NewDefaultBrowserOpener(&utils.DefaultCommandExectutor{}), []string{})
 }
 
@@ -94,13 +87,13 @@ func NewClient(credentials *Credentials) (*Client, error) {
 //			},
 //	       gospotify.AllScopes, // Passing all scopes
 //		)
-func NewClientWithCustomScopes(credentials *Credentials, scopes []string) (*Client, error) {
+func NewClientWithCustomScopes(credentials *utils.Credentials, scopes []string) (*Client, error) {
 	return NewClientWithDependencies(credentials, &utils.DefaultStateGenerator{}, &utils.DefaultHttpServer{}, utils.NewDefaultBrowserOpener(&utils.DefaultCommandExectutor{}), scopes)
 }
 
 // NewClientWithDependencies initializes and returns a new Spotify client.
 func NewClientWithDependencies(
-	credentials CredentialsExchanger,
+	credentials utils.CredentialsExchanger,
 	stateGenerator utils.StateGenerator,
 	httpServer utils.HttpServer,
 	browserOpener utils.BrowserOpener,
@@ -144,104 +137,33 @@ func NewClientWithDependencies(
 	}
 
 	// Init and return the Client instance
-	return initClient(httpClient, authToken, credentials.(*Credentials), authToken.AccessToken), nil
+	return initClient(authToken, credentials.(*utils.Credentials)), nil
 }
 
 // initClient is a re-usable method to create a client with provided dependencies.
-func initClient(httpClient *utils.HttpClient, authToken *models.AuthToken, credentials *Credentials, token string) *Client {
-	// Create an HTTP client with access token
-	httpClientWithToken := utils.NewHttpClientWithToken(consts.BaseUrlApi, token)
+func initClient(authToken *models.AuthToken, credentials *utils.Credentials) *Client {
+	// Create an HTTP httpClient with access token
+	httpClient := utils.NewHttpClientWithToken(consts.BaseUrlApi, authToken, credentials)
 
-	// Create and return the Client instance
+	// Intialize services and return the Client instance
 	return &Client{
-		httpClient:  httpClient,
-		authToken:   authToken,
-		credentials: credentials,
-
-		// Intialize all services with dependencies
-		UserService:      apis.NewDefultUserService(httpClientWithToken),
-		AlbumService:     apis.NewDefaultAlbumService(httpClientWithToken),
-		ArtistService:    apis.NewDefaultArtistService(httpClientWithToken),
-		AudiobookService: apis.NewDefaultAudiobookService(httpClientWithToken),
-		CategoryService:  apis.NewDefaultCategoryService(httpClientWithToken),
-		ChapterService:   apis.NewDefaultChapterService(httpClientWithToken),
-		EpisodeService:   apis.NewDefaultEpisodeService(httpClientWithToken),
-		GenreService:     apis.NewDefaultGenreService(httpClientWithToken),
-		MarketService:    apis.NewDefaultMarketService(httpClientWithToken),
-		PlayerService:    apis.NewDefaultPlayerService(httpClientWithToken),
+		UserService:      apis.NewDefultUserService(httpClient),
+		AlbumService:     apis.NewDefaultAlbumService(httpClient),
+		ArtistService:    apis.NewDefaultArtistService(httpClient),
+		AudiobookService: apis.NewDefaultAudiobookService(httpClient),
+		CategoryService:  apis.NewDefaultCategoryService(httpClient),
+		ChapterService:   apis.NewDefaultChapterService(httpClient),
+		EpisodeService:   apis.NewDefaultEpisodeService(httpClient),
+		GenreService:     apis.NewDefaultGenreService(httpClient),
+		MarketService:    apis.NewDefaultMarketService(httpClient),
+		PlayerService:    apis.NewDefaultPlayerService(httpClient),
 	}
 }
 
 // NewClientWithToken initializes and returns a new Spotify client with the provided token.
 // This is useful when you have a valid token and want to create a client with that token.
-// For example, you can use this method when you want to set the permanent token. It doesn't support token refresh functionality.
+// For example, you can use this method when you want to set the permanent token.
+// It doesn't support the token refresh functionality. Error will be thrown when the access token is expired.
 func NewClientWithToken(token string) (*Client, error) {
-	return initClient(nil, nil, nil, token), nil
-}
-
-// RefreshTokens refreshes the tokens.
-func (c *Client) RefreshTokens() error {
-	// To make sure the dependencies have initialized before refreshing the tokens
-	if c.credentials == nil {
-		return &utils.Error{Type: utils.AppErrorType, AppError: &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgCredentialsNotInitialized}}
-	}
-	if c.authToken == nil {
-		return &utils.Error{Type: utils.AppErrorType, AppError: &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgAuthTokenNotInitialized}}
-	}
-	if c.httpClient == nil {
-		return &utils.Error{Type: utils.AppErrorType, AppError: &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgHttpClientNotInitialized}}
-	}
-
-	// Set the required headers
-	headers := map[string]string{
-		"Content-Type": "application/x-www-form-urlencoded",
-	}
-
-	// Set the form values for the token refresh request
-	formValues := map[string]string{
-		"grant_type":    "refresh_token",
-		"client_id":     c.credentials.ClientId,
-		"client_secret": c.credentials.ClientSecret,
-		"refresh_token": c.authToken.RefreshToken,
-	}
-
-	// Make a POST request to the token endpoint
-	res, err := c.httpClient.Post(context.Background(), consts.EndpointRefresh, headers, nil, formValues, nil)
-	if err != nil {
-		return err
-	}
-
-	// Read the response body
-	data, err := io.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-
-	// Unmarshal the response data into an AuthToken struct
-	var authToken models.AuthToken
-	if err := json.Unmarshal(data, &authToken); err != nil {
-		return err
-	}
-
-	// Update the client's authToken
-	c.authToken = &authToken
-
-	return nil
-}
-
-// CheckAndRefreshTokens checks for the AuthToken expiry and then triggers refresh tokens call if needed.
-func (c *Client) CheckAndRefreshTokens() error {
-	// To make sure the dependencies have initialized before checking the expiry
-	if c.authToken == nil {
-		return &utils.Error{Type: utils.AppErrorType, AppError: &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgAuthTokenNotInitialized}}
-	}
-
-	// Check if the token has expired
-	if time.Now().After(c.authToken.ExpiryTime) {
-		if err := c.RefreshTokens(); err != nil {
-			return &utils.Error{Type: utils.AppErrorType, AppError: &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgRefreshTokensFailure, Err: err}}
-		}
-	}
-
-	return nil
+	return initClient(&models.AuthToken{AccessToken: token}, nil), nil
 }
