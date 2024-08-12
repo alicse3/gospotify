@@ -53,4 +53,20 @@ const (
 
 	// Markets related endpoints
 	EndpointGetAvailableMarkets = "/v1/markets" // Get the list of markets where Spotify is available.
+
+	// Player related endpoints
+	EndpointPlaybackState         = "/v1/me/player"                   // Get information about the user’s current playback state, including track or episode, progress, and active device.
+	EndpointAvailableDevices      = "/v1/me/player/devices"           // Get information about a user’s available Spotify Connect devices. Some device models are not supported and will not be listed in the API response.
+	EndpointCurrentlyPlayingTrack = "/v1/me/player/currently-playing" // Get the object currently being played on the user's Spotify account.
+	EndpointStartOrResumePlayback = "/v1/me/player/play"              // Start a new context or resume current playback on the user's active device. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	EndpointPausePlayback         = "/v1/me/player/pause"             // Pause playback on the user's account. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	EndpointSkipToNext            = "/v1/me/player/next"              // Skips to next track in the user’s queue. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	EndpointSkipToPrevious        = "/v1/me/player/previous"          // Skips to previous track in the user’s queue. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	EndpointSeekToPosition        = "/v1/me/player/seek"              // Seeks to the given position in the user’s currently playing track. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	EndpointRepeatMode            = "/v1/me/player/repeat"            // Set the repeat mode for the user's playback. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	EndpointPlaybackVolume        = "/v1/me/player/volume"            // Set the volume for the user’s current playback device. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	EndpointTogglePlaybackShuffle = "/v1/me/player/shuffle"           // Toggle shuffle on or off for user’s playback. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	EndpointRecentlyPlayedTracks  = "/v1/me/player/recently-played"   // Get tracks from the current user's recently played tracks. Note: Currently doesn't support podcast episodes.
+	EndpointUsersQueue            = "/v1/me/player/queue"             // Get the list of objects that make up the user's queue.
+	EndpointPlaybackQueue         = "/v1/me/player/queue"             // Add an item to the end of the user's current playback queue. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
 )
