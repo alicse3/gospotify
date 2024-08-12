@@ -55,9 +55,9 @@ func NewHttpClientWithToken(baseUrl, token string) *HttpClient {
 	}
 }
 
-// Post makes an HTTP POST request to the specified endpoint with optional headers, form values, and request body.
+// Post makes an HTTP POST request to the specified endpoint with optional headers, query params, form values, and request body.
 // It returns the HTTP response and any error that occurred during the request.
-func (hc *HttpClient) Post(ctx context.Context, endpoint string, headers, formValues map[string]string, body any) (*http.Response, error) {
+func (hc *HttpClient) Post(ctx context.Context, endpoint string, headers, queryParams, formValues map[string]string, body any) (*http.Response, error) {
 	// Construct full url
 	fullUrl := hc.BaseUrl + endpoint
 
@@ -95,6 +95,15 @@ func (hc *HttpClient) Post(ctx context.Context, endpoint string, headers, formVa
 	// Set the request headers (if provided)
 	for key, val := range headers {
 		req.Header.Set(key, val)
+	}
+
+	// Set the query params in the request
+	if queryParams != nil {
+		query := req.URL.Query()
+		for key, val := range queryParams {
+			query.Add(key, val)
+		}
+		req.URL.RawQuery = query.Encode()
 	}
 
 	// Send the HTTP request and return the response and any error that occurred

@@ -30,6 +30,7 @@ type Client struct {
 	episodeService   apis.EpisodeService
 	genreService     apis.GenreService
 	marketService    apis.MarketService
+	playerService    apis.PlayerService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -167,6 +168,7 @@ func initClient(httpClient *utils.HttpClient, authToken *models.AuthToken, crede
 		episodeService:   apis.NewDefaultEpisodeService(httpClientWithToken),
 		genreService:     apis.NewDefaultGenreService(httpClientWithToken),
 		marketService:    apis.NewDefaultMarketService(httpClientWithToken),
+		playerService:    apis.NewDefaultPlayerService(httpClientWithToken),
 	}
 }
 
@@ -204,7 +206,7 @@ func (c *Client) RefreshTokens() error {
 	}
 
 	// Make a POST request to the token endpoint
-	res, err := c.HttpClient.Post(context.Background(), consts.EndpointRefresh, headers, formValues, nil)
+	res, err := c.HttpClient.Post(context.Background(), consts.EndpointRefresh, headers, nil, formValues, nil)
 	if err != nil {
 		return err
 	}
@@ -415,4 +417,94 @@ func (c *Client) GetAvailableGenresSeeds() (*models.Genres, error) {
 // GetAvailableMarkets returns the available markets information.
 func (c *Client) GetAvailableMarkets() (*models.Markets, error) {
 	return c.marketService.GetAvailableMarkets()
+}
+
+// GetPlaybackState returns the playback state information.
+// Required authorization scopes: user-read-playback-state
+func (c *Client) GetPlaybackState(input models.GetPlaybackStateRequest) (*models.PlaybackState, error) {
+	return c.playerService.GetPlaybackState(input)
+}
+
+// TransferPlayback transfers the playback.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) TransferPlayback(input models.TransferPlaybackRequest) error {
+	return c.playerService.TransferPlayback(input)
+}
+
+// GetAvailableDevices returns the available devices information.
+// Required authorization scopes: user-read-playback-state
+func (c *Client) GetAvailableDevices() (*models.AvailableDevices, error) {
+	return c.playerService.GetAvailableDevices()
+}
+
+// GetCurrentlyPlayingTrack returns the currently playing track information.
+// Required authorization scopes: user-read-currently-playing
+func (c *Client) GetCurrentlyPlayingTrack(input models.GetCurrentlyPlayingTrackRequest) (*models.PlaybackState, error) {
+	return c.playerService.GetCurrentlyPlayingTrack(input)
+}
+
+// StartOrResumePlayback starts or resumes the playback.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) StartOrResumePlayback(input models.StartOrResumePlaybackRequest) error {
+	return c.playerService.StartOrResumePlayback(input)
+}
+
+// PausePlayback pauses the playback.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) PausePlayback(input models.PausePlaybackRequest) error {
+	return c.playerService.PausePlayback(input)
+}
+
+// SkipToNext skips to the next.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) SkipToNext(input models.SkipToNextRequest) error {
+	return c.playerService.SkipToNext(input)
+}
+
+// SkipToPrevious skips to the previous.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) SkipToPrevious(input models.SkipToPreviousRequest) error {
+	return c.playerService.SkipToPrevious(input)
+}
+
+// SeekToPosition seeks to the position.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) SeekToPosition(input models.SeekToPositionRequest) error {
+	return c.playerService.SeekToPosition(input)
+}
+
+// SetRepeatMode sets the repeat mode.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) SetRepeatMode(input models.SetRepeatModeRequest) error {
+	return c.playerService.SetRepeatMode(input)
+}
+
+// SetPlaybackVolume sets the playback volume.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) SetPlaybackVolume(input models.SetPlaybackVolumeRequest) error {
+	return c.playerService.SetPlaybackVolume(input)
+}
+
+// TogglePlaybackShuffle toggles the playback shuffle.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) TogglePlaybackShuffle(input models.TogglePlaybackShuffleRequest) error {
+	return c.playerService.TogglePlaybackShuffle(input)
+}
+
+// GetRecentlyPlayedTracks returns the recently played tracks information.
+// Required authorization scopes: user-read-recently-played
+func (c *Client) GetRecentlyPlayedTracks(input models.GetRecentlyPlayedTracksRequest) (*models.RecentlyPlayedTracks, error) {
+	return c.playerService.GetRecentlyPlayedTracks(input)
+}
+
+// GetUsersQueue returns the users queue information.
+// Required authorization scopes: user-read-currently-playing, user-read-playback-state
+func (c *Client) GetUsersQueue() (*models.UsersQueue, error) {
+	return c.playerService.GetUsersQueue()
+}
+
+// AddItemToPlaybackQueue adds item to the playback queue.
+// Required authorization scopes: user-modify-playback-state
+func (c *Client) AddItemToPlaybackQueue(input models.AddItemToPlaybackQueueRequest) error {
+	return c.playerService.AddItemToPlaybackQueue(input)
 }
