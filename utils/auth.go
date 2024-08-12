@@ -1,4 +1,4 @@
-package gospotify
+package utils
 
 import (
 	"context"
@@ -7,17 +7,15 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 
 	"github.com/alicse3/gospotify/consts"
 	"github.com/alicse3/gospotify/models"
-	"github.com/alicse3/gospotify/utils"
 )
 
 // CredentialsExchanger interface defines the methods for token retrieval.
 type CredentialsExchanger interface {
 	GetAuthorizationUrl(scopes []string, state string) (string, error)
-	ExchangeCodeForTokens(httpClient *utils.HttpClient, code string) (*models.AuthToken, error)
+	ExchangeCodeForTokens(httpClient *HttpClient, code string) (*models.AuthToken, error)
 }
 
 // Credentials struct holds the client ID, client secret and redirect url.
@@ -52,7 +50,7 @@ func (c *Credentials) GetAuthorizationUrl(scopes []string, state string) (string
 }
 
 // ExchangeCodeForTokens method fetches an access token from the Accounts API.
-func (c *Credentials) ExchangeCodeForTokens(httpClient *utils.HttpClient, code string) (*models.AuthToken, error) {
+func (c *Credentials) ExchangeCodeForTokens(httpClient *HttpClient, code string) (*models.AuthToken, error) {
 	// Set the required headers
 	headers := map[string]string{
 		"Content-Type": "application/x-www-form-urlencoded",
@@ -70,27 +68,27 @@ func (c *Credentials) ExchangeCodeForTokens(httpClient *utils.HttpClient, code s
 	// Make a POST request to the token endpoint
 	res, err := httpClient.Post(context.Background(), consts.EndpointToken, headers, nil, formValues, nil)
 	if err != nil {
-		return nil, err
+		return nil, &AppError{Status: http.StatusInternalServerError, Message: consts.MsgPostCallFailed, Err: err}
 	}
 
 	// Handle Spotify API error
 	if res.StatusCode != http.StatusOK {
-		return nil, utils.ParseSpotifyError(res, utils.AuthErrorType)
+		return nil, ParseSpotifyError(res, AuthErrorType)
 	}
 
 	// Read the response body
 	data, err := io.ReadAll(res.Body)
 	if err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToReadResponseBody, Err: err}}
 	}
 	defer res.Body.Close()
 
 	// Unmarshal the response data into an AuthToken struct
 	var authToken models.AuthToken
 	if err := json.Unmarshal(data, &authToken); err != nil {
-		return nil, err
+		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToUnmarshalResponseData, Err: err}}
 	}
-	authToken.ExpiryTime = time.Now().Add(time.Duration(authToken.ExpiresIn) * time.Second)
+	authToken.SetExpiryTime()
 
 	// Return the AuthToken
 	return &authToken, nil

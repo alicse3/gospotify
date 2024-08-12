@@ -20,11 +20,16 @@ const (
 	MsgGettingAuthUrlFailure         = "Getting auth url failure"
 	MsgOpeningBrowserFailure         = "Opening browser failure"
 	MsgCredentialsNotInitialized     = "Credentials not initialized"
-	MsgAuthTokenNotInitialized       = "Auth token not initialized"
-	MsgHttpClientNotInitialized      = "Http client not initialized"
-	MsgRefreshTokensFailure          = "Refresh tokens failure"
 	MsgFailedToReadResponseBody      = "Failed to read response body"
+	MsgFailedToRefreshTokens         = "Failed to refresh tokens"
 	MsgFailedToUnmarshalResponseData = "Failed to unmarshal response data"
+	MsgFailedToMarshalRequestData    = "Failed to marshal request data"
+	MsgFailedToParseUrl              = "Failed to parse URL"
+	MsgFailedToCreatePostRequest     = "Failed to create post request"
+	MsgFailedToCreateGetRequest      = "Failed to create get request"
+	MsgFailedToCreatePutRequest      = "Failed to create put request"
+	MsgFailedToCreateDeleteRequest   = "Failed to create delete request"
+	MsgFailedToSendRequest           = "Failed to send request"
 
 	MsgFailedToGetCurrentUserProfile = "Failed to get current user profile"
 
@@ -36,6 +41,7 @@ const (
 	MsgFailedToGetSavedAlbums   = "Failed to get Saved Albums"
 	MsgFailedToCheckSavedAlbums = "Failed to check Saved Albums"
 	MsgFailedToGetNewReleases   = "Failed to get New Releases"
+	MsgPostCallFailed           = "Failed to make a POST API call"
 
 	MsgFailedToGetArtist          = "Failed to get an Artist"
 	MsgFailedToGetArtists         = "Failed to get an Artists"
