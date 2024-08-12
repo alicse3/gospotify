@@ -68,7 +68,7 @@ func (c *Credentials) ExchangeCodeForTokens(httpClient *utils.HttpClient, code s
 	}
 
 	// Make a POST request to the token endpoint
-	res, err := httpClient.Post(context.Background(), consts.EndpointToken, headers, formValues, nil)
+	res, err := httpClient.Post(context.Background(), consts.EndpointToken, headers, nil, formValues, nil)
 	if err != nil {
 		return nil, err
 	}
