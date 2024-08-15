@@ -87,4 +87,16 @@ const (
 	EndpointShowEpisodes    = "/v1/shows/%s/episodes" // Get Spotify catalog information about an show’s episodes. Optional parameters can be used to limit the number of episodes returned.
 	EndpointSaveShows       = "/v1/me/shows"          // Get or Remove or Save shows to/from current Spotify user's library.
 	EndpointCheckSavedShows = "/v1/me/shows/contains" // Check if one or more shows is already saved in the current Spotify user's library.
+
+	// Tracks related endpoints
+	EndpointTrack                      = "/v1/tracks/%s"          // Get Spotify catalog information for a single track identified by its unique Spotify ID.
+	EndpointTracks                     = "/v1/tracks"             // Get Spotify catalog information for multiple tracks based on their Spotify IDs.
+	EndpointSaveTracks                 = "/v1/me/tracks"          // Get or Save or Remove tracks from/to the current user's 'Your Music' library.
+	EndpointCheckSavedTracks           = "/v1/me/tracks/contains" // Check if one or more tracks is already saved in the current Spotify user's 'Your Music' library.
+	EndpointSeveralTracksAudioFeatures = "/v1/audio-features"     // Get audio features for multiple tracks based on their Spotify IDs.
+	EndpointTracksTracksAudioFeatures  = "/v1/audio-features/%s"  // Get audio feature information for a single track identified by its unique Spotify ID.
+	EndpointTracksAudioAnalysis        = "/v1/audio-analysis/%s"  // Get a low-level audio analysis for a track in the Spotify catalog. The audio analysis describes the track’s structure and musical content, including rhythm, pitch, and timbre.
+	// Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks. If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.
+	// For artists and tracks that are very new or obscure there might not be enough data to generate a list of tracks.
+	EndpointRecommendations = "/v1/recommendations"
 )

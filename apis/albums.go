@@ -17,7 +17,7 @@ import (
 type AlbumService interface {
 	GetAlbum(input models.GetAlbumRequest) (*models.Album, error)
 	GetAlbums(input models.GetAlbumsRequest) (*models.Albums, error)
-	GetAlbumTracks(input models.GetAlbumTracksRequest) (*models.Tracks, error)
+	GetAlbumTracks(input models.GetAlbumTracksRequest) (*models.AlbumTracks, error)
 	GetSavedAlbums(input models.GetSavedAlbumsRequest) (*models.SavedAlbums, error)
 	SaveAlbums(input models.SaveAlbumsRequest) error
 	RemoveAlbums(input models.RemoveAlbumsRequest) error
@@ -115,7 +115,7 @@ func (service *DefaultAlbumService) GetAlbums(input models.GetAlbumsRequest) (*m
 }
 
 // GetAlbumTracks implements the AlbumService's interface GetAlbumTracks method.
-func (service *DefaultAlbumService) GetAlbumTracks(input models.GetAlbumTracksRequest) (*models.Tracks, error) {
+func (service *DefaultAlbumService) GetAlbumTracks(input models.GetAlbumTracksRequest) (*models.AlbumTracks, error) {
 	// Validate the input
 	if input.Id == "" {
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdRequired}
@@ -146,7 +146,7 @@ func (service *DefaultAlbumService) GetAlbumTracks(input models.GetAlbumTracksRe
 	defer res.Body.Close()
 
 	// Unmarshal the response data into Tracks struct
-	var tracks models.Tracks
+	var tracks models.AlbumTracks
 	if err := json.Unmarshal(data, &tracks); err != nil {
 		return nil, err
 	}
