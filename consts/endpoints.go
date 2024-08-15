@@ -77,4 +77,7 @@ const (
 	EndpointFeaturedPlaylists     = "/v1/browse/featured-playlists"      // Get a list of Spotify featured playlists (shown, for example, on a Spotify player's 'Browse' tab).
 	EndpointCategoryPlaylists     = "/v1/browse/categories/%s/playlists" // Get a list of Spotify playlists tagged with a particular category.
 	EndpointPlaylistCoverImage    = "/v1/playlists/%s/images"            // Get the current image associated with a specific playlist. Or Replace the image used to represent a specific playlist.
+
+	// Search related endpoints
+	EndpointSearch = "/v1/search" // Get Spotify catalog information about albums, artists, playlists, tracks, shows, episodes or audiobooks that match a keyword string. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 )

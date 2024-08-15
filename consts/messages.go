@@ -72,6 +72,8 @@ const (
 	MsgUriRequired                  = "URI is required"
 	MsgPlaylistIdRequired           = "Playlist ID is required"
 	MsgUserIdRequired               = "User ID is required"
+	MsgSearchQueryRequired          = "Search query is required"
+	MsgSearchTypeRequired           = "Search type is/are required"
 
 	MsgFailedToGetEpisode         = "Failed to get an Episode"
 	MsgFailedToGetEpisodes        = "Failed to get Episodes"
@@ -113,6 +115,8 @@ const (
 	MsgFailedToGetCategoryPlaylists        = "Failed to get the Category Playlists"
 	MsgFailedToGetPlaylistCoverImage       = "Failed to get the Playlist Cover Image"
 	MsgFailedToAddCustomPlaylistCoverImage = "Failed to add the Custom Playlist Cover Image"
+
+	MsgFailedToGetSearchResults = "Failed to get Search Results"
 
 	MsgUnsupportedPlatform = "unsupported platform"
 	MsgUknownErrorType     = "Unknown error type"
