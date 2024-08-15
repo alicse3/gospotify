@@ -80,4 +80,11 @@ const (
 
 	// Search related endpoints
 	EndpointSearch = "/v1/search" // Get Spotify catalog information about albums, artists, playlists, tracks, shows, episodes or audiobooks that match a keyword string. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
+
+	// Shows related endpoints
+	EndpointShow            = "/v1/shows/%s"          // Get Spotify catalog information for a single show identified by its unique Spotify ID.
+	EndpointShows           = "/v1/shows"             // Get Spotify catalog information for several shows based on their Spotify IDs.
+	EndpointShowEpisodes    = "/v1/shows/%s/episodes" // Get Spotify catalog information about an show’s episodes. Optional parameters can be used to limit the number of episodes returned.
+	EndpointSaveShows       = "/v1/me/shows"          // Get or Remove or Save shows to/from current Spotify user's library.
+	EndpointCheckSavedShows = "/v1/me/shows/contains" // Check if one or more shows is already saved in the current Spotify user's library.
 )

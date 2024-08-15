@@ -26,6 +26,7 @@ type Client struct {
 	PlayerService    apis.PlayerService
 	PlaylistService  apis.PlaylistService
 	SearchService    apis.SearchService
+	ShowService      apis.ShowService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -161,6 +162,7 @@ func initClient(authToken *models.AuthToken, credentials *utils.Credentials) *Cl
 		PlayerService:    apis.NewDefaultPlayerService(httpClient),
 		PlaylistService:  apis.NewDefaultPlaylistService(httpClient),
 		SearchService:    apis.NewDefaultSearchService(httpClient),
+		ShowService:      apis.NewDefaultShowService(httpClient),
 	}
 }
 
