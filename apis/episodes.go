@@ -64,7 +64,7 @@ func (service *DefaultEpisodeService) GetEpisode(input models.GetEpisodeRequest)
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Episode struct
+	// Unmarshal the response data into Episode struct
 	var episode models.Episode
 	if err := json.Unmarshal(data, &episode); err != nil {
 		return nil, err
@@ -102,7 +102,7 @@ func (service *DefaultEpisodeService) GetEpisodes(input models.GetEpisodesReques
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Episodes struct
+	// Unmarshal the response data into Episodes struct
 	var episodes models.Episodes
 	if err := json.Unmarshal(data, &episodes); err != nil {
 		return nil, err
@@ -135,7 +135,7 @@ func (service *DefaultEpisodeService) GetSavedEpisodes(input models.GetSavedEpis
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an SavedEpisodes struct
+	// Unmarshal the response data into SavedEpisodes struct
 	var savedEpisodes models.SavedEpisodes
 	if err := json.Unmarshal(data, &savedEpisodes); err != nil {
 		return nil, err
@@ -223,7 +223,7 @@ func (service *DefaultEpisodeService) CheckSavedEpisodes(input models.CheckSaved
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an CheckSavedEpisodes struct
+	// Unmarshal the response data into CheckSavedEpisodes struct
 	var checkSavedEpisodes models.CheckSavedEpisodes
 	if err := json.Unmarshal(data, &checkSavedEpisodes); err != nil {
 		return nil, err

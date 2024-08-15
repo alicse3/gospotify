@@ -90,7 +90,7 @@ func (hc *HttpClient) refreshToken() error {
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an AuthToken struct
+	// Unmarshal the response data into AuthToken struct
 	var authToken models.AuthToken
 	if err := json.Unmarshal(data, &authToken); err != nil {
 		return &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToUnmarshalResponseData, Err: err}

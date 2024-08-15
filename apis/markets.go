@@ -46,7 +46,7 @@ func (service *DefaultMarketService) GetAvailableMarkets() (*models.Markets, err
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Markets struct
+	// Unmarshal the response data into Markets struct
 	var markets models.Markets
 	if err := json.Unmarshal(data, &markets); err != nil {
 		return nil, err

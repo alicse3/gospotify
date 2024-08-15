@@ -46,7 +46,7 @@ func (service *DefaultGenreService) GetAvailableGenresSeeds() (*models.Genres, e
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Genres struct
+	// Unmarshal the response data into Genres struct
 	var genres models.Genres
 	if err := json.Unmarshal(data, &genres); err != nil {
 		return nil, err
