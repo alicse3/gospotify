@@ -82,7 +82,7 @@ func main() {
 	}
 
 	// Retrieve the current user's profile data
-	userData, err := client.UserService.GetCurrentUserProfile
+	userData, err := client.UserService.GetCurrentUserProfile()
 	if err != nil {
 		log.Fatalf("Failed to get user data: %v", err)
 	}
