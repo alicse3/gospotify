@@ -66,7 +66,7 @@ func (service *DefaultAlbumService) GetAlbum(input models.GetAlbumRequest) (*mod
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Album struct
+	// Unmarshal the response data into Album struct
 	var album models.Album
 	if err := json.Unmarshal(data, &album); err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (service *DefaultAlbumService) GetAlbums(input models.GetAlbumsRequest) (*m
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Albums struct
+	// Unmarshal the response data into Albums struct
 	var albums models.Albums
 	if err := json.Unmarshal(data, &albums); err != nil {
 		return nil, err
@@ -145,7 +145,7 @@ func (service *DefaultAlbumService) GetAlbumTracks(input models.GetAlbumTracksRe
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Tracks struct
+	// Unmarshal the response data into Tracks struct
 	var tracks models.Tracks
 	if err := json.Unmarshal(data, &tracks); err != nil {
 		return nil, err
@@ -178,7 +178,7 @@ func (service *DefaultAlbumService) GetSavedAlbums(input models.GetSavedAlbumsRe
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an SavedAlbums struct
+	// Unmarshal the response data into SavedAlbums struct
 	var savedAlbums models.SavedAlbums
 	if err := json.Unmarshal(data, &savedAlbums); err != nil {
 		return nil, err
@@ -266,7 +266,7 @@ func (service *DefaultAlbumService) CheckSavedAlbums(input models.CheckSavedAlbu
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an CheckSavedAlbums struct
+	// Unmarshal the response data into CheckSavedAlbums struct
 	var checkSavedAlbums models.CheckSavedAlbums
 	if err := json.Unmarshal(data, &checkSavedAlbums); err != nil {
 		return nil, err
@@ -299,7 +299,7 @@ func (service *DefaultAlbumService) GetNewReleases(input models.GetNewReleasesRe
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an NewlyReleasedAlbums struct
+	// Unmarshal the response data into NewlyReleasedAlbums struct
 	var newlyReleasedAlbums models.NewlyReleasedAlbums
 	if err := json.Unmarshal(data, &newlyReleasedAlbums); err != nil {
 		return nil, err

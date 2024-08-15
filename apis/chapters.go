@@ -56,7 +56,7 @@ func (service *DefaultChapterService) GetChapter(input models.GetChapterRequest)
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Chapter struct
+	// Unmarshal the response data into Chapter struct
 	var chapter models.Chapter
 	if err := json.Unmarshal(data, &chapter); err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (service *DefaultChapterService) GetChapters(input models.GetChaptersReques
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Chapters struct
+	// Unmarshal the response data into Chapters struct
 	var chapters models.Chapters
 	if err := json.Unmarshal(data, &chapters); err != nil {
 		return nil, err

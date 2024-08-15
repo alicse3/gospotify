@@ -83,7 +83,7 @@ func (c *Credentials) ExchangeCodeForTokens(httpClient *HttpClient, code string)
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an AuthToken struct
+	// Unmarshal the response data into AuthToken struct
 	var authToken models.AuthToken
 	if err := json.Unmarshal(data, &authToken); err != nil {
 		return nil, &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToUnmarshalResponseData, Err: err}}

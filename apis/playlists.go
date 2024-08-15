@@ -71,7 +71,7 @@ func (service *DefaultPlaylistService) GetPlaylist(input models.GetPlaylistReque
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Playlist struct
+	// Unmarshal the response data into Playlist struct
 	var playlist models.Playlist
 	if err := json.Unmarshal(data, &playlist); err != nil {
 		return nil, err
@@ -140,7 +140,7 @@ func (service *DefaultPlaylistService) GetPlaylistItems(input models.GetPlaylist
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an PlaylistItems struct
+	// Unmarshal the response data into PlaylistItems struct
 	var playlistItems models.PlaylistItems
 	if err := json.Unmarshal(data, &playlistItems); err != nil {
 		return nil, err
@@ -181,7 +181,7 @@ func (service *DefaultPlaylistService) UpdatePlaylistItems(input models.UpdatePl
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an UpdatePlaylistItems struct
+	// Unmarshal the response data into UpdatePlaylistItems struct
 	var updatePlaylistItems models.UpdatePlaylistItems
 	if err := json.Unmarshal(data, &updatePlaylistItems); err != nil {
 		return nil, err
@@ -222,7 +222,7 @@ func (service *DefaultPlaylistService) AddPlaylistItems(input models.AddPlaylist
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an AddPlaylistItems struct
+	// Unmarshal the response data into AddPlaylistItems struct
 	var addPlaylistItems models.AddPlaylistItems
 	if err := json.Unmarshal(data, &addPlaylistItems); err != nil {
 		return nil, err
@@ -263,7 +263,7 @@ func (service *DefaultPlaylistService) RemovePlaylistItems(input models.RemovePl
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an RemovePlaylistItems struct
+	// Unmarshal the response data into RemovePlaylistItems struct
 	var removePlaylistItems models.RemovePlaylistItems
 	if err := json.Unmarshal(data, &removePlaylistItems); err != nil {
 		return nil, err
@@ -296,7 +296,7 @@ func (service *DefaultPlaylistService) GetCurrentUserPlaylists(input models.GetC
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Playlists struct
+	// Unmarshal the response data into Playlists struct
 	var playlists models.Playlists
 	if err := json.Unmarshal(data, &playlists); err != nil {
 		return nil, err
@@ -337,7 +337,7 @@ func (service *DefaultPlaylistService) GetUserPlaylists(input models.GetUsersPla
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Playlists struct
+	// Unmarshal the response data into Playlists struct
 	var userPlaylists models.Playlists
 	if err := json.Unmarshal(data, &userPlaylists); err != nil {
 		return nil, err
@@ -378,7 +378,7 @@ func (service *DefaultPlaylistService) CreatePlaylist(input models.CreatePlaylis
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Playlist struct
+	// Unmarshal the response data into Playlist struct
 	var playlist models.Playlist
 	if err := json.Unmarshal(data, &playlist); err != nil {
 		return nil, err
@@ -411,7 +411,7 @@ func (service *DefaultPlaylistService) GetFeaturedPlaylists(input models.GetFeat
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an FeaturedPlaylists struct
+	// Unmarshal the response data into FeaturedPlaylists struct
 	var featuredPlaylists models.FeaturedPlaylists
 	if err := json.Unmarshal(data, &featuredPlaylists); err != nil {
 		return nil, err
@@ -449,7 +449,7 @@ func (service *DefaultPlaylistService) GetCategoryPlaylists(input models.GetCate
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an CategoryPlaylists struct
+	// Unmarshal the response data into CategoryPlaylists struct
 	var categoryPlaylists models.CategoryPlaylists
 	if err := json.Unmarshal(data, &categoryPlaylists); err != nil {
 		return nil, err
@@ -487,7 +487,7 @@ func (service *DefaultPlaylistService) GetPlaylistCoverImage(input models.GetPla
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an PlaylistCoverImage struct
+	// Unmarshal the response data into PlaylistCoverImage struct
 	var playlistCoverImage models.PlaylistCoverImage
 	if err := json.Unmarshal(data, &playlistCoverImage); err != nil {
 		return nil, err

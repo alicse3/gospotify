@@ -62,7 +62,7 @@ func (service *DefaultAudiobookService) GetAudiobook(input models.GetAudiobookRe
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Audiobook struct
+	// Unmarshal the response data into Audiobook struct
 	var audiobook models.Audiobook
 	if err := json.Unmarshal(data, &audiobook); err != nil {
 		return nil, err
@@ -100,7 +100,7 @@ func (service *DefaultAudiobookService) GetAudiobooks(input models.GetAudiobooks
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Audiobooks struct
+	// Unmarshal the response data into Audiobooks struct
 	var audiobooks models.Audiobooks
 	if err := json.Unmarshal(data, &audiobooks); err != nil {
 		return nil, err
@@ -141,7 +141,7 @@ func (service *DefaultAudiobookService) GetAudiobookChapters(input models.GetAud
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an AudiobookChapters struct
+	// Unmarshal the response data into AudiobookChapters struct
 	var audiobookChapters models.AudiobookChapters
 	if err := json.Unmarshal(data, &audiobookChapters); err != nil {
 		return nil, err
@@ -174,7 +174,7 @@ func (service *DefaultAudiobookService) GetSavedAudiobooks(input models.GetSaved
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an SavedAudiobooks struct
+	// Unmarshal the response data into SavedAudiobooks struct
 	var savedAudiobooks models.SavedAudiobooks
 	if err := json.Unmarshal(data, &savedAudiobooks); err != nil {
 		return nil, err
@@ -262,7 +262,7 @@ func (service *DefaultAudiobookService) CheckSavedAudiobooks(input models.CheckS
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an CheckSavedAudiobooks struct
+	// Unmarshal the response data into CheckSavedAudiobooks struct
 	var checkSavedAudiobooks models.CheckSavedAudiobooks
 	if err := json.Unmarshal(data, &checkSavedAudiobooks); err != nil {
 		return nil, err

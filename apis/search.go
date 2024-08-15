@@ -58,7 +58,7 @@ func (service *DefaultSearchService) Search(input models.SearchRequest) (*models
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an SearchResponse struct
+	// Unmarshal the response data into SearchResponse struct
 	var searchResponse models.SearchResponse
 	if err := json.Unmarshal(data, &searchResponse); err != nil {
 		return nil, err

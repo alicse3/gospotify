@@ -46,7 +46,7 @@ func (dus *DefaultUserService) GetCurrentUserProfile() (*models.User, error) {
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an User struct
+	// Unmarshal the response data into User struct
 	var user models.User
 	if err := json.Unmarshal(data, &user); err != nil {
 		return nil, err

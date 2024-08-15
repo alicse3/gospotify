@@ -64,7 +64,7 @@ func (service *DefaultPlayerService) GetPlaybackState(input models.GetPlaybackSt
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an PlaybackState struct
+	// Unmarshal the response data into PlaybackState struct
 	var playbackState models.PlaybackState
 	if err := json.Unmarshal(data, &playbackState); err != nil {
 		return nil, err
@@ -119,7 +119,7 @@ func (service *DefaultPlayerService) GetAvailableDevices() (*models.AvailableDev
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an AvailableDevices struct
+	// Unmarshal the response data into AvailableDevices struct
 	var availableDevices models.AvailableDevices
 	if err := json.Unmarshal(data, &availableDevices); err != nil {
 		return nil, err
@@ -152,7 +152,7 @@ func (service *DefaultPlayerService) GetCurrentlyPlayingTrack(input models.GetCu
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an PlaybackState struct
+	// Unmarshal the response data into PlaybackState struct
 	var currentlyPlayingTrack models.PlaybackState
 	if err := json.Unmarshal(data, &currentlyPlayingTrack); err != nil {
 		return nil, err
@@ -363,7 +363,7 @@ func (service *DefaultPlayerService) GetRecentlyPlayedTracks(input models.GetRec
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an RecentlyPlayedTracks struct
+	// Unmarshal the response data into RecentlyPlayedTracks struct
 	var recentlyPlayedTracks models.RecentlyPlayedTracks
 	if err := json.Unmarshal(data, &recentlyPlayedTracks); err != nil {
 		return nil, err
@@ -393,7 +393,7 @@ func (service *DefaultPlayerService) GetUsersQueue() (*models.UsersQueue, error)
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an UsersQueue struct
+	// Unmarshal the response data into UsersQueue struct
 	var usersQueue models.UsersQueue
 	if err := json.Unmarshal(data, &usersQueue); err != nil {
 		return nil, err

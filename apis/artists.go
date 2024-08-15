@@ -60,7 +60,7 @@ func (service *DefaultArtistService) GetArtist(input models.GetArtistRequest) (*
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Artist struct
+	// Unmarshal the response data into Artist struct
 	var artist models.Artist
 	if err := json.Unmarshal(data, &artist); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (service *DefaultArtistService) GetArtists(input models.GetArtistsRequest) 
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Artists struct
+	// Unmarshal the response data into Artists struct
 	var artists models.Artists
 	if err := json.Unmarshal(data, &artists); err != nil {
 		return nil, err
@@ -139,7 +139,7 @@ func (service *DefaultArtistService) GetArtistAlbums(input models.GetArtistAlbum
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an ArtistAlbums struct
+	// Unmarshal the response data into ArtistAlbums struct
 	var artistAlbums models.ArtistAlbums
 	if err := json.Unmarshal(data, &artistAlbums); err != nil {
 		return nil, err
@@ -180,7 +180,7 @@ func (service *DefaultArtistService) GetArtistTopTracks(input models.GetArtistTo
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an ArtistTopTracks struct
+	// Unmarshal the response data into ArtistTopTracks struct
 	var artistTopTracks models.ArtistTopTracks
 	if err := json.Unmarshal(data, &artistTopTracks); err != nil {
 		return nil, err
@@ -221,7 +221,7 @@ func (service *DefaultArtistService) GetRelatedArtists(input models.GetRelatedAr
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Artists struct
+	// Unmarshal the response data into Artists struct
 	var relatedArtists models.Artists
 	if err := json.Unmarshal(data, &relatedArtists); err != nil {
 		return nil, err

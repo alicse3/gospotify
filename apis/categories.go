@@ -52,7 +52,7 @@ func (service *DefaultCategoryService) GetBrowseCategories(input models.GetBrows
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Categories struct
+	// Unmarshal the response data into Categories struct
 	var categories models.Categories
 	if err := json.Unmarshal(data, &categories); err != nil {
 		return nil, err
@@ -93,7 +93,7 @@ func (service *DefaultCategoryService) GetBrowseCategory(input models.GetBrowseC
 	}
 	defer res.Body.Close()
 
-	// Unmarshal the response data into an Category struct
+	// Unmarshal the response data into Category struct
 	var category models.Category
 	if err := json.Unmarshal(data, &category); err != nil {
 		return nil, err
