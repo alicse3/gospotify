@@ -74,6 +74,9 @@ const (
 	MsgUserIdRequired               = "User ID is required"
 	MsgSearchQueryRequired          = "Search query is required"
 	MsgSearchTypeRequired           = "Search type is/are required"
+	MsgSeedArtistsRequired          = "Seed Artists are required"
+	MsgSeedGenresRequired           = "Seed Genres are required"
+	MsgSeedTracksRequired           = "Seed Tracks are required"
 
 	MsgFailedToGetEpisode         = "Failed to get an Episode"
 	MsgFailedToGetEpisodes        = "Failed to get Episodes"
@@ -125,6 +128,16 @@ const (
 	MsgFailedToCheckSavedShows  = "Failed to check Saved Shows"
 
 	MsgFailedToGetSearchResults = "Failed to get Search Results"
+
+	MsgFailedToGetTrack                      = "Failed to get a Track"
+	MsgFailedToGetSavedTracks                = "Failed to get Saved Tracks"
+	MsgFailedToSaveTracks                    = "Failed to Save Tracks"
+	MsgFailedToRemoveSavedTracks             = "Failed to remove Saved Tracks"
+	MsgFailedToCheckSavedTracks              = "Failed to check Saved Tracks"
+	MsgFailedToGetSeveralTracksAudioFeatures = "Failed to get several Tracks Audio Features"
+	MsgFailedToGetTracksAudioFeatures        = "Failed to get Tracks Audio Features"
+	MsgFailedToGetTracksAudioAnalysis        = "Failed to get Tracks Audio Analysis"
+	MsgFailedToGetRecommendations            = "Failed to get Recommendations"
 
 	MsgUnsupportedPlatform = "unsupported platform"
 	MsgUknownErrorType     = "Unknown error type"

@@ -54,8 +54,8 @@ type GetNewReleasesRequest struct {
 	Offset int
 }
 
-// Tracks represents the track's information retrieved from the Spotify API.
-type Tracks struct {
+// AlbumTracks represents the track's information retrieved from the Spotify API.
+type AlbumTracks struct {
 	Href     string `json:"href"`
 	Limit    int    `json:"limit"`
 	Next     string `json:"next"`
@@ -137,7 +137,7 @@ type Album struct {
 		Type string `json:"type"`
 		Uri  string `json:"uri"`
 	} `json:"artists"`
-	Tracks     Tracks `json:"tracks"`
+	Tracks     AlbumTracks `json:"tracks"`
 	Copyrights []struct {
 		Text string `json:"text"`
 		Type string `json:"type"`

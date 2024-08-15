@@ -30,7 +30,7 @@ type SearchRequest struct {
 
 // SearchResponse represents the search's information retrieved from the Spotify API.
 type SearchResponse struct {
-	Tracks  Tracks `json:"tracks"`
+	Tracks  AlbumTracks `json:"tracks"`
 	Artists struct {
 		Href     string `json:"href"`
 		Limit    int    `json:"limit"`
