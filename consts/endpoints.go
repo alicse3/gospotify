@@ -68,4 +68,13 @@ const (
 	EndpointRecentlyPlayedTracks  = "/v1/me/player/recently-played"   // Get tracks from the current user's recently played tracks. Note: Currently doesn't support podcast episodes.
 	EndpointUsersQueue            = "/v1/me/player/queue"             // Get the list of objects that make up the user's queue.
 	EndpointPlaybackQueue         = "/v1/me/player/queue"             // Add an item to the end of the user's current playback queue. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+
+	// Playlists related endpoints
+	EndpointPlaylists             = "/v1/playlists/%s"                   // Get a playlist owned by a Spotify user.
+	EndpointPlaylistItems         = "/v1/playlists/%s/tracks"            // Get or Update or Add or Remove the full details of the items of a playlist owned by a Spotify user.
+	EndpointCurrentUsersPlaylists = "/v1/me/playlists"                   // Get a list of the playlists owned or followed by the current Spotify user.
+	EndpointUsersPlaylists        = "/v1/users/%s/playlists"             // Get or Create a playlist for a Spotify user.
+	EndpointFeaturedPlaylists     = "/v1/browse/featured-playlists"      // Get a list of Spotify featured playlists (shown, for example, on a Spotify player's 'Browse' tab).
+	EndpointCategoryPlaylists     = "/v1/browse/categories/%s/playlists" // Get a list of Spotify playlists tagged with a particular category.
+	EndpointPlaylistCoverImage    = "/v1/playlists/%s/images"            // Get the current image associated with a specific playlist. Or Replace the image used to represent a specific playlist.
 )
