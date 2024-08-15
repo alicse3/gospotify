@@ -44,7 +44,7 @@ func (service *DefaultTrackService) GetTrack(input models.GetTrackRequest) (*mod
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdRequired}
 	}
 
-	// Substitute id in Album endpoint
+	// Substitute id in the endpoint
 	endpoint := fmt.Sprintf(consts.EndpointTrack, input.Id)
 
 	// Add inputs to the query parameters
@@ -282,7 +282,7 @@ func (service *DefaultTrackService) CheckTracksAudioFeatures(input models.GetTra
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdRequired}
 	}
 
-	// Substitute id in Album endpoint
+	// Substitute id in the endpoint
 	endpoint := fmt.Sprintf(consts.EndpointTracksTracksAudioFeatures, input.Id)
 
 	// Add inputs to the query parameters
@@ -323,7 +323,7 @@ func (service *DefaultTrackService) CheckTracksAudioAnalysis(input models.GetTra
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdRequired}
 	}
 
-	// Substitute id in Album endpoint
+	// Substitute id in the endpoint
 	endpoint := fmt.Sprintf(consts.EndpointTracksAudioAnalysis, input.Id)
 
 	// Add inputs to the query parameters
