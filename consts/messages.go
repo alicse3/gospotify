@@ -31,8 +31,6 @@ const (
 	MsgFailedToCreateDeleteRequest   = "Failed to create delete request"
 	MsgFailedToSendRequest           = "Failed to send request"
 
-	MsgFailedToGetCurrentUserProfile = "Failed to get current user profile"
-
 	MsgFailedToGetAlbum         = "Failed to get an Album"
 	MsgFailedToGetAlbums        = "Failed to get Albums"
 	MsgFailedToGetTracks        = "Failed to get Tracks"
@@ -77,6 +75,7 @@ const (
 	MsgSeedArtistsRequired          = "Seed Artists are required"
 	MsgSeedGenresRequired           = "Seed Genres are required"
 	MsgSeedTracksRequired           = "Seed Tracks are required"
+	MsgTypeRequired                 = "Type is required"
 
 	MsgFailedToGetEpisode         = "Failed to get an Episode"
 	MsgFailedToGetEpisodes        = "Failed to get Episodes"
@@ -138,6 +137,17 @@ const (
 	MsgFailedToGetTracksAudioFeatures        = "Failed to get Tracks Audio Features"
 	MsgFailedToGetTracksAudioAnalysis        = "Failed to get Tracks Audio Analysis"
 	MsgFailedToGetRecommendations            = "Failed to get Recommendations"
+
+	MsgFailedToGetCurrentUserProfile             = "Failed to get current user profile"
+	MsgFailedToGetUserTopItems                   = "Failed to get user top items"
+	MsgFailedToGetUserProfile                    = "Failed to get user profile"
+	MsgFailedToFollowPlaylist                    = "Failed to follow playlist"
+	MsgFailedToUnfollowPlaylist                  = "Failed to unfollow playlist"
+	MsgFailedToGetFollowedArtists                = "Failed to get followed artists"
+	MsgFailedToFollowArtistsOrUsers              = "Failed to follow artists or users"
+	MsgFailedToUnfollowArtistsOrUsers            = "Failed to unfollow artists or users"
+	MsgFailedToCheckIfUserFollowsArtistsOrUsers  = "Failed to check if user follows artists or users"
+	MsgFailedToCheckIfCurrentUserFollowsPlaylist = "Failed to check if current user follows playlist"
 
 	MsgUnsupportedPlatform = "unsupported platform"
 	MsgUknownErrorType     = "Unknown error type"

@@ -9,7 +9,13 @@ const (
 	EndpointAuthorize = "/authorize" // Spotify authorization endpoint.
 	EndpointToken     = "/api/token" // Spotify token endpoint.
 
-	EndpointMe = "/v1/me" // Get detailed profile information about the current user (including the current user's username).
+	EndpointMe                         = "/v1/me"                              // Get detailed profile information about the current user (including the current user's username).
+	EndpointUserTopItems               = "/v1/me/top/%s"                       // Get the current user's top artists or tracks based on calculated affinity.
+	EndpointUserProfile                = "/v1/users/%s"                        // Get public profile information about a Spotify user.
+	EndpointFollowers                  = "/v1/playlists/%s/followers"          // Add or Remove the current user as a follower of a playlist.
+	EndpointFollowing                  = "/v1/me/following"                    // Get or Follow or Unfollow the current user as a follower of one or more artists or other Spotify users.
+	EndpointUserFollowsArtistsOrUsers  = "/v1/me/following/contains"           // Check to see if the current user is following one or more artists or other Spotify users.
+	EndpointCurrentUserFollowsPlaylist = "/v1/playlists/%s/followers/contains" // Check to see if the current user is following a specified playlist.
 
 	// Albums related endpoints
 	EndpointAlbum         = "/v1/albums/%s"           // Get Spotify catalog information for a single album.

@@ -14,7 +14,6 @@ import (
 // Client represents the Spotify API client.
 type Client struct {
 	// Services to interact with Spotify api
-	UserService      apis.UserService
 	AlbumService     apis.AlbumService
 	ArtistService    apis.ArtistService
 	AudiobookService apis.AudiobookService
@@ -28,6 +27,7 @@ type Client struct {
 	SearchService    apis.SearchService
 	ShowService      apis.ShowService
 	TrackService     apis.TrackService
+	UserService      apis.UserService
 }
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
@@ -151,7 +151,6 @@ func initClient(authToken *models.AuthToken, credentials *utils.Credentials) *Cl
 
 	// Intialize services and return the Client instance
 	return &Client{
-		UserService:      apis.NewDefultUserService(httpClient),
 		AlbumService:     apis.NewDefaultAlbumService(httpClient),
 		ArtistService:    apis.NewDefaultArtistService(httpClient),
 		AudiobookService: apis.NewDefaultAudiobookService(httpClient),
@@ -165,6 +164,7 @@ func initClient(authToken *models.AuthToken, credentials *utils.Credentials) *Cl
 		SearchService:    apis.NewDefaultSearchService(httpClient),
 		ShowService:      apis.NewDefaultShowService(httpClient),
 		TrackService:     apis.NewDefaultTrackService(httpClient),
+		UserService:      apis.NewDefultUserService(httpClient),
 	}
 }
 
