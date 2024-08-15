@@ -116,6 +116,14 @@ const (
 	MsgFailedToGetPlaylistCoverImage       = "Failed to get the Playlist Cover Image"
 	MsgFailedToAddCustomPlaylistCoverImage = "Failed to add the Custom Playlist Cover Image"
 
+	MsgFailedToGetShow          = "Failed to get a Show"
+	MsgFailedToGetShows         = "Failed to get Shows"
+	MsgFailedToGetShowEpisodes  = "Failed to get Show Episodes"
+	MsgFailedToGetSavedShows    = "Failed to get Saved Shows"
+	MsgFailedToSaveShows        = "Failed to Save Shows"
+	MsgFailedToRemoveSavedShows = "Failed to remove Saved Shows"
+	MsgFailedToCheckSavedShows  = "Failed to check Saved Shows"
+
 	MsgFailedToGetSearchResults = "Failed to get Search Results"
 
 	MsgUnsupportedPlatform = "unsupported platform"
