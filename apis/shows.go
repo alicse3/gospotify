@@ -41,7 +41,7 @@ func (service *DefaultShowService) GetShow(input models.GetShowRequest) (*models
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdRequired}
 	}
 
-	// Substitute id in Album endpoint
+	// Substitute id in the endpoint
 	endpoint := fmt.Sprintf(consts.EndpointShow, input.Id)
 
 	// Add inputs to the query parameters
@@ -120,7 +120,7 @@ func (service *DefaultShowService) GetShowEpisodes(input models.GetShowEpisodesR
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdRequired}
 	}
 
-	// Substitute id in Album endpoint
+	// Substitute id in the endpoint
 	endpoint := fmt.Sprintf(consts.EndpointShowEpisodes, input.Id)
 
 	// Add inputs to the query parameters

@@ -42,7 +42,7 @@ func (service *DefaultAlbumService) GetAlbum(input models.GetAlbumRequest) (*mod
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdRequired}
 	}
 
-	// Substitute id in Album endpoint
+	// Substitute id in the endpoint
 	endpoint := fmt.Sprintf(consts.EndpointAlbum, input.Id)
 
 	// Add inputs to the query parameters
@@ -121,7 +121,7 @@ func (service *DefaultAlbumService) GetAlbumTracks(input models.GetAlbumTracksRe
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdRequired}
 	}
 
-	// Substitute id in Album endpoint
+	// Substitute id in the endpoint
 	endpoint := fmt.Sprintf(consts.EndpointAlbumTracks, input.Id)
 
 	// Add inputs to the query parameters
