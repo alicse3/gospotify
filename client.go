@@ -32,7 +32,7 @@ type Client struct {
 
 // GetCredentialsFromEnv reads the credentials(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URL) from environment variables and returns them.
 // It throws an error if there are any.
-func GetCredentialsFromEnv() (*utils.Credentials, error) {
+func GetCredentialsFromEnv() (*Credentials, error) {
 	// Get SPOTIFY_CLIENT_ID value from env
 	clientId := os.Getenv(consts.EnvClientId)
 	if clientId == "" {
@@ -51,7 +51,7 @@ func GetCredentialsFromEnv() (*utils.Credentials, error) {
 		return nil, &utils.Error{Type: utils.AppErrorType, AppError: &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgRedirectUrlNotFound}}
 	}
 
-	return &utils.Credentials{ClientId: clientId, ClientSecret: clientSecret, RedirectUrl: redirectUrl}, nil
+	return &Credentials{ClientId: clientId, ClientSecret: clientSecret, RedirectUrl: redirectUrl}, nil
 }
 
 // DefaultClient initializes and returns a new Spotify client.
@@ -61,7 +61,7 @@ func DefaultClient() (*Client, error) {
 		return nil, err
 	}
 
-	return NewClient(credentials)
+	return NewClient(*credentials)
 }
 
 // DefaultClientWithCustomScopes initializes the client with given custom scopes and returns a new Spotify client.
@@ -71,12 +71,12 @@ func DefaultClientWithCustomScopes(scopes []string) (*Client, error) {
 		return nil, err
 	}
 
-	return NewClientWithCustomScopes(credentials, scopes)
+	return NewClientWithCustomScopes(*credentials, scopes)
 }
 
 // NewClient initializes and returns a new Spotify client.
-func NewClient(credentials *utils.Credentials) (*Client, error) {
-	return NewClientWithDependencies(credentials, &utils.DefaultStateGenerator{}, &utils.DefaultHttpServer{}, utils.NewDefaultBrowserOpener(&utils.DefaultCommandExectutor{}), []string{})
+func NewClient(credentials Credentials) (*Client, error) {
+	return NewClientWithDependencies(&credentials, &utils.DefaultStateGenerator{}, &utils.DefaultHttpServer{}, utils.NewDefaultBrowserOpener(&utils.DefaultCommandExectutor{}), []string{})
 }
 
 // NewClientWithCustomScopes initializes the client with given custom scopes and returns a new Spotify client.
@@ -91,13 +91,13 @@ func NewClient(credentials *utils.Credentials) (*Client, error) {
 //			},
 //	       gospotify.AllScopes, // Passing all scopes
 //		)
-func NewClientWithCustomScopes(credentials *utils.Credentials, scopes []string) (*Client, error) {
-	return NewClientWithDependencies(credentials, &utils.DefaultStateGenerator{}, &utils.DefaultHttpServer{}, utils.NewDefaultBrowserOpener(&utils.DefaultCommandExectutor{}), scopes)
+func NewClientWithCustomScopes(credentials Credentials, scopes []string) (*Client, error) {
+	return NewClientWithDependencies(&credentials, &utils.DefaultStateGenerator{}, &utils.DefaultHttpServer{}, utils.NewDefaultBrowserOpener(&utils.DefaultCommandExectutor{}), scopes)
 }
 
 // NewClientWithDependencies initializes and returns a new Spotify client.
 func NewClientWithDependencies(
-	credentials utils.CredentialsExchanger,
+	credentials CredentialsExchanger,
 	stateGenerator utils.StateGenerator,
 	httpServer utils.HttpServer,
 	browserOpener utils.BrowserOpener,
@@ -141,13 +141,13 @@ func NewClientWithDependencies(
 	}
 
 	// Init and return the Client instance
-	return initClient(authToken, credentials.(*utils.Credentials)), nil
+	return initClient(authToken, credentials.(*Credentials)), nil
 }
 
 // initClient is a re-usable method to create a client with provided dependencies.
-func initClient(authToken *models.AuthToken, credentials *utils.Credentials) *Client {
+func initClient(authToken *models.AuthToken, credentials *Credentials) *Client {
 	// Create an HTTP httpClient with access token
-	httpClient := utils.NewHttpClientWithToken(consts.BaseUrlApi, authToken, credentials)
+	httpClient := utils.NewHttpClientWithToken(consts.BaseUrlApi, authToken, credentials.ClientId, credentials.ClientSecret)
 
 	// Intialize services and return the Client instance
 	return &Client{

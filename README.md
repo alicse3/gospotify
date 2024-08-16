@@ -74,7 +74,7 @@ import (
 func main() {
 	// Initialize the client with your Spotify credentials
 	client, err := gospotify.NewClient(
-		&gospotify.Credentials{
+		gospotify.Credentials{
 			ClientId:     "your_client_id",
 			ClientSecret: "your_client_secret",
 			RedirectUrl:  "your_redirect_uri",
@@ -138,7 +138,7 @@ func main() {
 
 	// Initialize the client with custom scopes
 	client, err := gospotify.NewClientWithCustomScopes(
-		&gospotify.Credentials{
+		gospotify.Credentials{
 			ClientId:     "your_client_id",
 			ClientSecret: "your_client_secret",
 			RedirectUrl:  "your_redirect_uri",
