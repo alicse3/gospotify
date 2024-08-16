@@ -24,41 +24,50 @@ const (
 // HttpClient is a struct that wraps the standard http.Client
 // and provides a convenient way to make HTTP requests with a base URL.
 type HttpClient struct {
-	client      *http.Client      // Client for making HTTP requests
-	baseUrl     string            // Base url for api requests
-	authToken   *models.AuthToken // Auth token for authenticating requests
-	credentials *Credentials      // For refreshing the tokens
-	mu          sync.Mutex
+	// Client for making HTTP requests
+	client *http.Client
+	// Base url for api requests
+	baseUrl string
+	// Auth token for authenticating requests
+	authToken *models.AuthToken
+	// For refreshing the tokens
+	clientId, clientSecret string
+	// For synchronization
+	mu sync.Mutex
 }
 
 // NewHttpClient returns a new HttpClient instance with a default timeout of 10 seconds.
 func NewHttpClient(baseUrl string) *HttpClient {
-	return &HttpClient{
-		client:  &http.Client{Timeout: defaultHttpClientTimeout},
-		baseUrl: baseUrl,
-	}
+	return NewHttpClientWithToken(baseUrl, nil, "", "")
 }
 
 // NewHttpClientWithToken creates an httpClient instance with the given dependencies.
-func NewHttpClientWithToken(baseUrl string, authToken *models.AuthToken, credentials *Credentials) *HttpClient {
+func NewHttpClientWithToken(baseUrl string, authToken *models.AuthToken, clientId, clientSecret string) *HttpClient {
 	return &HttpClient{
-		client:      &http.Client{Timeout: defaultHttpClientTimeout},
-		baseUrl:     baseUrl,
-		authToken:   authToken,
-		credentials: credentials,
+		client:       &http.Client{Timeout: defaultHttpClientTimeout},
+		baseUrl:      baseUrl,
+		authToken:    authToken,
+		clientId:     clientId,
+		clientSecret: clientSecret,
 	}
 }
 
 // refreshToken refreshes the access token using the refresh token.
 func (hc *HttpClient) refreshToken() error {
-	// To make sure the dependencies are initialized before refreshing the tokens
-	if hc.credentials == nil {
-		return &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgCredentialsNotInitialized}}
+	// To make sure the dependencies are not empty before refreshing the tokens
+	if hc.clientId == "" {
+		return &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgEmptyClientId}}
+	}
+	if hc.clientSecret == "" {
+		return &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgEmptyClientSecret}}
+	}
+	if hc.authToken == nil {
+		return &Error{Type: AppErrorType, AppError: &AppError{Status: http.StatusInternalServerError, Message: consts.MsgAuthTokenNotInitialised}}
 	}
 
 	// Generating base64 endoded(client id and client secret) string for authorization.
 	// For details, visit: https://developer.spotify.com/documentation/web-api/tutorials/refreshing-tokens
-	base64Encoded := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", hc.credentials.ClientId, hc.credentials.ClientSecret)))
+	base64Encoded := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", hc.clientId, hc.clientSecret)))
 
 	// Set the required headers
 	headers := map[string]string{
