@@ -89,8 +89,16 @@ func ParseSpotifyError(res *http.Response, errorType ErrorType) error {
 	}
 	defer res.Body.Close()
 
-	// Print the response in case of any Spotify API errors
-	fmt.Printf("Spotify API response: %+v\n", string(data))
+	// Check Spotify API response
+	strData := string(data)
+	if strData == "" {
+		fmt.Println("Spotify API response is Empty")
+		// Ignore error parsing if response body is empty
+		return nil
+	} else {
+		// Print the response in case of any Spotify API errors
+		fmt.Printf("Spotify API response: %+v\n", strData)
+	}
 
 	// Handle Spotify errors
 	if errorType == AuthErrorType {

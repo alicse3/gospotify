@@ -21,7 +21,7 @@ type GetSavedTracksRequest struct {
 
 // SaveTracksBody represents the save tracks body information.
 type SaveTracksBody struct {
-	Ids string `json:"ids"`
+	Ids []string `json:"ids"`
 }
 
 // SaveTracksRequest represents the save tracks request information.
@@ -32,7 +32,7 @@ type SaveTracksRequest struct {
 
 // RemoveTracksBody represents the remove tracks body information.
 type RemoveTracksBody struct {
-	Ids string `json:"ids"`
+	Ids []string `json:"ids"`
 }
 
 // RemoveTracksRequest represents the remove tracks request information.
@@ -210,7 +210,7 @@ type CheckSavedTracks []bool
 
 // SeveralTracksAudioFeatures represents the several tracks audio features information retrieved from the Spotify API.
 type SeveralTracksAudioFeatures struct {
-	AudioFeatures TracksAudioFeatures `json:"audio_features"`
+	AudioFeatures []TracksAudioFeatures `json:"audio_features"`
 }
 
 // TracksAudioFeatures represents the tracks audio features information retrieved from the Spotify API.

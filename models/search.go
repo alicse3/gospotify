@@ -39,7 +39,7 @@ type SearchResponse struct {
 		Previous string `json:"previous"`
 		Total    int    `json:"total"`
 		Items    []struct {
-			Artist []Artist
+			Artist
 		} `json:"items"`
 	} `json:"artists"`
 	Albums struct {
@@ -50,7 +50,7 @@ type SearchResponse struct {
 		Previous string `json:"previous"`
 		Total    int    `json:"total"`
 		Items    []struct {
-			Album []Album
+			Album
 		} `json:"items"`
 	} `json:"albums"`
 	Playlists Playlists `json:"playlists"`
@@ -98,7 +98,7 @@ type SearchResponse struct {
 		Previous string `json:"previous"`
 		Total    int    `json:"total"`
 		Items    []struct {
-			Episode []Episode
+			Episode
 		} `json:"items"`
 	} `json:"episodes"`
 	Audiobooks struct {

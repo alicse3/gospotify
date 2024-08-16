@@ -14,7 +14,10 @@ import (
 
 // ChapterService interface defines the methods for interacting with the Spotify Chapter's API.
 type ChapterService interface {
+	// Get Spotify catalog information for a single audiobook chapter. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	GetChapter(input models.GetChapterRequest) (*models.Chapter, error)
+
+	// Get Spotify catalog information for several audiobook chapters identified by their Spotify IDs. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	GetChapters(input models.GetChaptersRequest) (*models.Chapters, error)
 }
 
@@ -73,8 +76,11 @@ func (service *DefaultChapterService) GetChapters(input models.GetChaptersReques
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdsRequired}
 	}
 
+	// Add inputs to the query parameters
+	params := map[string]string{"ids": input.Ids, "market": input.Market}
+
 	// Make an API call
-	res, err := service.client.Get(context.Background(), consts.EndpointGetChapters, nil)
+	res, err := service.client.Get(context.Background(), consts.EndpointGetChapters, params)
 	if err != nil {
 		return nil, &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToGetChapters, Err: err}
 	}

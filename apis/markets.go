@@ -13,6 +13,7 @@ import (
 
 // MarketService interface defines the methods for interacting with the Spotify Market's API.
 type MarketService interface {
+	// Get the list of markets where Spotify is available.
 	GetAvailableMarkets() (*models.Markets, error)
 }
 

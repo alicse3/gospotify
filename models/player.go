@@ -130,40 +130,28 @@ type PlaybackState struct {
 	ProgressMs int  `json:"progress_ms"`
 	IsPlaying  bool `json:"is_playing"`
 	Item       struct {
-		Track struct {
-			Album struct {
-				AlbumType        string   `json:"album_type"`
-				TotalTracks      int      `json:"total_tracks"`
-				AvailableMarkets []string `json:"available_markets"`
-				ExternalUrls     struct {
-					Spotify string `json:"spotify"`
-				} `json:"external_urls"`
-				Href   string `json:"href"`
-				Id     string `json:"id"`
-				Images []struct {
-					Url    string `json:"url"`
-					Height int    `json:"height"`
-					Width  int    `json:"width"`
-				} `json:"images"`
-				Name                 string `json:"name"`
-				ReleaseDate          string `json:"release_date"`
-				ReleaseDatePrecision string `json:"release_date_precision"`
-				Restrictions         struct {
-					Reason string `json:"reason"`
-				} `json:"restrictions"`
-				Type    string `json:"type"`
-				Uri     string `json:"uri"`
-				Artists []struct {
-					ExternalUrls struct {
-						Spotify string `json:"spotify"`
-					} `json:"external_urls"`
-					Href string `json:"href"`
-					Id   string `json:"id"`
-					Name string `json:"name"`
-					Type string `json:"type"`
-					Uri  string `json:"uri"`
-				} `json:"artists"`
-			} `json:"album"`
+		Album struct {
+			AlbumType        string   `json:"album_type"`
+			TotalTracks      int      `json:"total_tracks"`
+			AvailableMarkets []string `json:"available_markets"`
+			ExternalUrls     struct {
+				Spotify string `json:"spotify"`
+			} `json:"external_urls"`
+			Href   string `json:"href"`
+			Id     string `json:"id"`
+			Images []struct {
+				Url    string `json:"url"`
+				Height int    `json:"height"`
+				Width  int    `json:"width"`
+			} `json:"images"`
+			Name                 string `json:"name"`
+			ReleaseDate          string `json:"release_date"`
+			ReleaseDatePrecision string `json:"release_date_precision"`
+			Restrictions         struct {
+				Reason string `json:"reason"`
+			} `json:"restrictions"`
+			Type    string `json:"type"`
+			Uri     string `json:"uri"`
 			Artists []struct {
 				ExternalUrls struct {
 					Spotify string `json:"spotify"`
@@ -174,39 +162,69 @@ type PlaybackState struct {
 				Type string `json:"type"`
 				Uri  string `json:"uri"`
 			} `json:"artists"`
-			AvailableMarkets []string `json:"available_markets"`
-			DiscNumber       int      `json:"disc_number"`
-			DurationMs       int      `json:"duration_ms"`
-			Explicit         bool     `json:"explicit"`
-			ExternalIds      struct {
-				Isrc string `json:"isrc"`
-				Ean  string `json:"ean"`
-				Upc  string `json:"upc"`
-			} `json:"external_ids"`
+		} `json:"album"`
+		Artists []struct {
 			ExternalUrls struct {
 				Spotify string `json:"spotify"`
 			} `json:"external_urls"`
-			Href       string `json:"href"`
-			Id         string `json:"id"`
-			IsPlayable bool   `json:"is_playable"`
-			LinkedFrom struct {
-			} `json:"linked_from"`
-			Restrictions struct {
-				Reason string `json:"reason"`
-			} `json:"restrictions"`
-			Name        string `json:"name"`
-			Popularity  int    `json:"popularity"`
-			PreviewUrl  string `json:"preview_url"`
-			TrackNumber int    `json:"track_number"`
-			Type        string `json:"type"`
-			Uri         string `json:"uri"`
-			IsLocal     bool   `json:"is_local"`
-		} `json:"track"`
-		Episode struct {
-			AudioPreviewUrl string `json:"audio_preview_url"`
+			Href string `json:"href"`
+			Id   string `json:"id"`
+			Name string `json:"name"`
+			Type string `json:"type"`
+			Uri  string `json:"uri"`
+		} `json:"artists"`
+		AvailableMarkets []string `json:"available_markets"`
+		DiscNumber       int      `json:"disc_number"`
+		DurationMs       int      `json:"duration_ms"`
+		Explicit         bool     `json:"explicit"`
+		ExternalIds      struct {
+			Isrc string `json:"isrc"`
+			Ean  string `json:"ean"`
+			Upc  string `json:"upc"`
+		} `json:"external_ids"`
+		ExternalUrls struct {
+			Spotify string `json:"spotify"`
+		} `json:"external_urls"`
+		Href       string `json:"href"`
+		Id         string `json:"id"`
+		IsPlayable bool   `json:"is_playable"`
+		LinkedFrom struct {
+		} `json:"linked_from"`
+		Restrictions struct {
+			Reason string `json:"reason"`
+		} `json:"restrictions"`
+		Name            string `json:"name"`
+		Popularity      int    `json:"popularity"`
+		PreviewUrl      string `json:"preview_url"`
+		TrackNumber     int    `json:"track_number"`
+		Type            string `json:"type"`
+		Uri             string `json:"uri"`
+		IsLocal         bool   `json:"is_local"`
+		AudioPreviewUrl string `json:"audio_preview_url"`
+		Description     string `json:"description"`
+		HtmlDescription string `json:"html_description"`
+		Images          []struct {
+			Url    string `json:"url"`
+			Height int    `json:"height"`
+			Width  int    `json:"width"`
+		} `json:"images"`
+		IsExternallyHosted   bool     `json:"is_externally_hosted"`
+		Language             string   `json:"language"`
+		Languages            []string `json:"languages"`
+		ReleaseDate          string   `json:"release_date"`
+		ReleaseDatePrecision string   `json:"release_date_precision"`
+		ResumePoint          struct {
+			FullyPlayed      bool `json:"fully_played"`
+			ResumePositionMs int  `json:"resume_position_ms"`
+		} `json:"resume_point"`
+		Show struct {
+			AvailableMarkets []string `json:"available_markets"`
+			Copyrights       []struct {
+				Text string `json:"text"`
+				Type string `json:"type"`
+			} `json:"copyrights"`
 			Description     string `json:"description"`
 			HtmlDescription string `json:"html_description"`
-			DurationMs      int    `json:"duration_ms"`
 			Explicit        bool   `json:"explicit"`
 			ExternalUrls    struct {
 				Spotify string `json:"spotify"`
@@ -218,51 +236,15 @@ type PlaybackState struct {
 				Height int    `json:"height"`
 				Width  int    `json:"width"`
 			} `json:"images"`
-			IsExternallyHosted   bool     `json:"is_externally_hosted"`
-			IsPlayable           bool     `json:"is_playable"`
-			Language             string   `json:"language"`
-			Languages            []string `json:"languages"`
-			Name                 string   `json:"name"`
-			ReleaseDate          string   `json:"release_date"`
-			ReleaseDatePrecision string   `json:"release_date_precision"`
-			ResumePoint          struct {
-				FullyPlayed      bool `json:"fully_played"`
-				ResumePositionMs int  `json:"resume_position_ms"`
-			} `json:"resume_point"`
-			Type         string `json:"type"`
-			Uri          string `json:"uri"`
-			Restrictions struct {
-				Reason string `json:"reason"`
-			} `json:"restrictions"`
-			Show struct {
-				AvailableMarkets []string `json:"available_markets"`
-				Copyrights       []struct {
-					Text string `json:"text"`
-					Type string `json:"type"`
-				} `json:"copyrights"`
-				Description     string `json:"description"`
-				HtmlDescription string `json:"html_description"`
-				Explicit        bool   `json:"explicit"`
-				ExternalUrls    struct {
-					Spotify string `json:"spotify"`
-				} `json:"external_urls"`
-				Href   string `json:"href"`
-				Id     string `json:"id"`
-				Images []struct {
-					Url    string `json:"url"`
-					Height int    `json:"height"`
-					Width  int    `json:"width"`
-				} `json:"images"`
-				IsExternallyHosted bool     `json:"is_externally_hosted"`
-				Languages          []string `json:"languages"`
-				MediaType          string   `json:"media_type"`
-				Name               string   `json:"name"`
-				Publisher          string   `json:"publisher"`
-				Type               string   `json:"type"`
-				Uri                string   `json:"uri"`
-				TotalEpisodes      int      `json:"total_episodes"`
-			} `json:"show"`
-		} `json:"episode"`
+			IsExternallyHosted bool     `json:"is_externally_hosted"`
+			Languages          []string `json:"languages"`
+			MediaType          string   `json:"media_type"`
+			Name               string   `json:"name"`
+			Publisher          string   `json:"publisher"`
+			Type               string   `json:"type"`
+			Uri                string   `json:"uri"`
+			TotalEpisodes      int      `json:"total_episodes"`
+		} `json:"show"`
 	} `json:"item"`
 	CurrentlyPlayingType string `json:"currently_playing_type"`
 	Actions              struct {
@@ -382,40 +364,28 @@ type RecentlyPlayedTracks struct {
 // UsersQueue represents the users queue information retrieved from the Spotify API.
 type UsersQueue struct {
 	CurrentlyPlaying struct {
-		Track struct {
-			Album struct {
-				AlbumType        string   `json:"album_type"`
-				TotalTracks      int      `json:"total_tracks"`
-				AvailableMarkets []string `json:"available_markets"`
-				ExternalUrls     struct {
-					Spotify string `json:"spotify"`
-				} `json:"external_urls"`
-				Href   string `json:"href"`
-				Id     string `json:"id"`
-				Images []struct {
-					Url    string `json:"url"`
-					Height int    `json:"height"`
-					Width  int    `json:"width"`
-				} `json:"images"`
-				Name                 string `json:"name"`
-				ReleaseDate          string `json:"release_date"`
-				ReleaseDatePrecision string `json:"release_date_precision"`
-				Restrictions         struct {
-					Reason string `json:"reason"`
-				} `json:"restrictions"`
-				Type    string `json:"type"`
-				Uri     string `json:"uri"`
-				Artists []struct {
-					ExternalUrls struct {
-						Spotify string `json:"spotify"`
-					} `json:"external_urls"`
-					Href string `json:"href"`
-					Id   string `json:"id"`
-					Name string `json:"name"`
-					Type string `json:"type"`
-					Uri  string `json:"uri"`
-				} `json:"artists"`
-			} `json:"album"`
+		Album struct {
+			AlbumType        string   `json:"album_type"`
+			TotalTracks      int      `json:"total_tracks"`
+			AvailableMarkets []string `json:"available_markets"`
+			ExternalUrls     struct {
+				Spotify string `json:"spotify"`
+			} `json:"external_urls"`
+			Href   string `json:"href"`
+			Id     string `json:"id"`
+			Images []struct {
+				Url    string `json:"url"`
+				Height int    `json:"height"`
+				Width  int    `json:"width"`
+			} `json:"images"`
+			Name                 string `json:"name"`
+			ReleaseDate          string `json:"release_date"`
+			ReleaseDatePrecision string `json:"release_date_precision"`
+			Restrictions         struct {
+				Reason string `json:"reason"`
+			} `json:"restrictions"`
+			Type    string `json:"type"`
+			Uri     string `json:"uri"`
 			Artists []struct {
 				ExternalUrls struct {
 					Spotify string `json:"spotify"`
@@ -426,39 +396,69 @@ type UsersQueue struct {
 				Type string `json:"type"`
 				Uri  string `json:"uri"`
 			} `json:"artists"`
-			AvailableMarkets []string `json:"available_markets"`
-			DiscNumber       int      `json:"disc_number"`
-			DurationMs       int      `json:"duration_ms"`
-			Explicit         bool     `json:"explicit"`
-			ExternalIds      struct {
-				Isrc string `json:"isrc"`
-				Ean  string `json:"ean"`
-				Upc  string `json:"upc"`
-			} `json:"external_ids"`
+		} `json:"album"`
+		Artists []struct {
 			ExternalUrls struct {
 				Spotify string `json:"spotify"`
 			} `json:"external_urls"`
-			Href       string `json:"href"`
-			Id         string `json:"id"`
-			IsPlayable bool   `json:"is_playable"`
-			LinkedFrom struct {
-			} `json:"linked_from"`
-			Restrictions struct {
-				Reason string `json:"reason"`
-			} `json:"restrictions"`
-			Name        string `json:"name"`
-			Popularity  int    `json:"popularity"`
-			PreviewUrl  string `json:"preview_url"`
-			TrackNumber int    `json:"track_number"`
-			Type        string `json:"type"`
-			Uri         string `json:"uri"`
-			IsLocal     bool   `json:"is_local"`
-		} `json:"track"`
-		Episode struct {
-			AudioPreviewUrl string `json:"audio_preview_url"`
+			Href string `json:"href"`
+			Id   string `json:"id"`
+			Name string `json:"name"`
+			Type string `json:"type"`
+			Uri  string `json:"uri"`
+		} `json:"artists"`
+		AvailableMarkets []string `json:"available_markets"`
+		DiscNumber       int      `json:"disc_number"`
+		DurationMs       int      `json:"duration_ms"`
+		Explicit         bool     `json:"explicit"`
+		ExternalIds      struct {
+			Isrc string `json:"isrc"`
+			Ean  string `json:"ean"`
+			Upc  string `json:"upc"`
+		} `json:"external_ids"`
+		ExternalUrls struct {
+			Spotify string `json:"spotify"`
+		} `json:"external_urls"`
+		Href       string `json:"href"`
+		Id         string `json:"id"`
+		IsPlayable bool   `json:"is_playable"`
+		LinkedFrom struct {
+		} `json:"linked_from"`
+		Restrictions struct {
+			Reason string `json:"reason"`
+		} `json:"restrictions"`
+		Name            string `json:"name"`
+		Popularity      int    `json:"popularity"`
+		PreviewUrl      string `json:"preview_url"`
+		TrackNumber     int    `json:"track_number"`
+		Type            string `json:"type"`
+		Uri             string `json:"uri"`
+		IsLocal         bool   `json:"is_local"`
+		AudioPreviewUrl string `json:"audio_preview_url"`
+		Description     string `json:"description"`
+		HtmlDescription string `json:"html_description"`
+		Images          []struct {
+			Url    string `json:"url"`
+			Height int    `json:"height"`
+			Width  int    `json:"width"`
+		} `json:"images"`
+		IsExternallyHosted   bool     `json:"is_externally_hosted"`
+		Language             string   `json:"language"`
+		Languages            []string `json:"languages"`
+		ReleaseDate          string   `json:"release_date"`
+		ReleaseDatePrecision string   `json:"release_date_precision"`
+		ResumePoint          struct {
+			FullyPlayed      bool `json:"fully_played"`
+			ResumePositionMs int  `json:"resume_position_ms"`
+		} `json:"resume_point"`
+		Show struct {
+			AvailableMarkets []string `json:"available_markets"`
+			Copyrights       []struct {
+				Text string `json:"text"`
+				Type string `json:"type"`
+			} `json:"copyrights"`
 			Description     string `json:"description"`
 			HtmlDescription string `json:"html_description"`
-			DurationMs      int    `json:"duration_ms"`
 			Explicit        bool   `json:"explicit"`
 			ExternalUrls    struct {
 				Spotify string `json:"spotify"`
@@ -470,87 +470,39 @@ type UsersQueue struct {
 				Height int    `json:"height"`
 				Width  int    `json:"width"`
 			} `json:"images"`
-			IsExternallyHosted   bool     `json:"is_externally_hosted"`
-			IsPlayable           bool     `json:"is_playable"`
-			Language             string   `json:"language"`
-			Languages            []string `json:"languages"`
-			Name                 string   `json:"name"`
-			ReleaseDate          string   `json:"release_date"`
-			ReleaseDatePrecision string   `json:"release_date_precision"`
-			ResumePoint          struct {
-				FullyPlayed      bool `json:"fully_played"`
-				ResumePositionMs int  `json:"resume_position_ms"`
-			} `json:"resume_point"`
-			Type         string `json:"type"`
-			Uri          string `json:"uri"`
-			Restrictions struct {
-				Reason string `json:"reason"`
-			} `json:"restrictions"`
-			Show struct {
-				AvailableMarkets []string `json:"available_markets"`
-				Copyrights       []struct {
-					Text string `json:"text"`
-					Type string `json:"type"`
-				} `json:"copyrights"`
-				Description     string `json:"description"`
-				HtmlDescription string `json:"html_description"`
-				Explicit        bool   `json:"explicit"`
-				ExternalUrls    struct {
-					Spotify string `json:"spotify"`
-				} `json:"external_urls"`
-				Href   string `json:"href"`
-				Id     string `json:"id"`
-				Images []struct {
-					Url    string `json:"url"`
-					Height int    `json:"height"`
-					Width  int    `json:"width"`
-				} `json:"images"`
-				IsExternallyHosted bool     `json:"is_externally_hosted"`
-				Languages          []string `json:"languages"`
-				MediaType          string   `json:"media_type"`
-				Name               string   `json:"name"`
-				Publisher          string   `json:"publisher"`
-				Type               string   `json:"type"`
-				Uri                string   `json:"uri"`
-				TotalEpisodes      int      `json:"total_episodes"`
-			} `json:"show"`
-		} `json:"episode"`
+			IsExternallyHosted bool     `json:"is_externally_hosted"`
+			Languages          []string `json:"languages"`
+			MediaType          string   `json:"media_type"`
+			Name               string   `json:"name"`
+			Publisher          string   `json:"publisher"`
+			Type               string   `json:"type"`
+			Uri                string   `json:"uri"`
+			TotalEpisodes      int      `json:"total_episodes"`
+		} `json:"show"`
 	} `json:"currently_playing"`
 	Queue []struct {
-		Track struct {
-			Album struct {
-				AlbumType        string   `json:"album_type"`
-				TotalTracks      int      `json:"total_tracks"`
-				AvailableMarkets []string `json:"available_markets"`
-				ExternalUrls     struct {
-					Spotify string `json:"spotify"`
-				} `json:"external_urls"`
-				Href   string `json:"href"`
-				Id     string `json:"id"`
-				Images []struct {
-					Url    string `json:"url"`
-					Height int    `json:"height"`
-					Width  int    `json:"width"`
-				} `json:"images"`
-				Name                 string `json:"name"`
-				ReleaseDate          string `json:"release_date"`
-				ReleaseDatePrecision string `json:"release_date_precision"`
-				Restrictions         struct {
-					Reason string `json:"reason"`
-				} `json:"restrictions"`
-				Type    string `json:"type"`
-				Uri     string `json:"uri"`
-				Artists []struct {
-					ExternalUrls struct {
-						Spotify string `json:"spotify"`
-					} `json:"external_urls"`
-					Href string `json:"href"`
-					Id   string `json:"id"`
-					Name string `json:"name"`
-					Type string `json:"type"`
-					Uri  string `json:"uri"`
-				} `json:"artists"`
-			} `json:"album"`
+		Album struct {
+			AlbumType        string   `json:"album_type"`
+			TotalTracks      int      `json:"total_tracks"`
+			AvailableMarkets []string `json:"available_markets"`
+			ExternalUrls     struct {
+				Spotify string `json:"spotify"`
+			} `json:"external_urls"`
+			Href   string `json:"href"`
+			Id     string `json:"id"`
+			Images []struct {
+				Url    string `json:"url"`
+				Height int    `json:"height"`
+				Width  int    `json:"width"`
+			} `json:"images"`
+			Name                 string `json:"name"`
+			ReleaseDate          string `json:"release_date"`
+			ReleaseDatePrecision string `json:"release_date_precision"`
+			Restrictions         struct {
+				Reason string `json:"reason"`
+			} `json:"restrictions"`
+			Type    string `json:"type"`
+			Uri     string `json:"uri"`
 			Artists []struct {
 				ExternalUrls struct {
 					Spotify string `json:"spotify"`
@@ -561,39 +513,69 @@ type UsersQueue struct {
 				Type string `json:"type"`
 				Uri  string `json:"uri"`
 			} `json:"artists"`
-			AvailableMarkets []string `json:"available_markets"`
-			DiscNumber       int      `json:"disc_number"`
-			DurationMs       int      `json:"duration_ms"`
-			Explicit         bool     `json:"explicit"`
-			ExternalIds      struct {
-				Isrc string `json:"isrc"`
-				Ean  string `json:"ean"`
-				Upc  string `json:"upc"`
-			} `json:"external_ids"`
+		} `json:"album"`
+		Artists []struct {
 			ExternalUrls struct {
 				Spotify string `json:"spotify"`
 			} `json:"external_urls"`
-			Href       string `json:"href"`
-			Id         string `json:"id"`
-			IsPlayable bool   `json:"is_playable"`
-			LinkedFrom struct {
-			} `json:"linked_from"`
-			Restrictions struct {
-				Reason string `json:"reason"`
-			} `json:"restrictions"`
-			Name        string `json:"name"`
-			Popularity  int    `json:"popularity"`
-			PreviewUrl  string `json:"preview_url"`
-			TrackNumber int    `json:"track_number"`
-			Type        string `json:"type"`
-			Uri         string `json:"uri"`
-			IsLocal     bool   `json:"is_local"`
-		} `json:"track"`
-		Episode struct {
-			AudioPreviewUrl string `json:"audio_preview_url"`
+			Href string `json:"href"`
+			Id   string `json:"id"`
+			Name string `json:"name"`
+			Type string `json:"type"`
+			Uri  string `json:"uri"`
+		} `json:"artists"`
+		AvailableMarkets []string `json:"available_markets"`
+		DiscNumber       int      `json:"disc_number"`
+		DurationMs       int      `json:"duration_ms"`
+		Explicit         bool     `json:"explicit"`
+		ExternalIds      struct {
+			Isrc string `json:"isrc"`
+			Ean  string `json:"ean"`
+			Upc  string `json:"upc"`
+		} `json:"external_ids"`
+		ExternalUrls struct {
+			Spotify string `json:"spotify"`
+		} `json:"external_urls"`
+		Href       string `json:"href"`
+		Id         string `json:"id"`
+		IsPlayable bool   `json:"is_playable"`
+		LinkedFrom struct {
+		} `json:"linked_from"`
+		Restrictions struct {
+			Reason string `json:"reason"`
+		} `json:"restrictions"`
+		Name            string `json:"name"`
+		Popularity      int    `json:"popularity"`
+		PreviewUrl      string `json:"preview_url"`
+		TrackNumber     int    `json:"track_number"`
+		Type            string `json:"type"`
+		Uri             string `json:"uri"`
+		IsLocal         bool   `json:"is_local"`
+		AudioPreviewUrl string `json:"audio_preview_url"`
+		Description     string `json:"description"`
+		HtmlDescription string `json:"html_description"`
+		Images          []struct {
+			Url    string `json:"url"`
+			Height int    `json:"height"`
+			Width  int    `json:"width"`
+		} `json:"images"`
+		IsExternallyHosted   bool     `json:"is_externally_hosted"`
+		Language             string   `json:"language"`
+		Languages            []string `json:"languages"`
+		ReleaseDate          string   `json:"release_date"`
+		ReleaseDatePrecision string   `json:"release_date_precision"`
+		ResumePoint          struct {
+			FullyPlayed      bool `json:"fully_played"`
+			ResumePositionMs int  `json:"resume_position_ms"`
+		} `json:"resume_point"`
+		Show struct {
+			AvailableMarkets []string `json:"available_markets"`
+			Copyrights       []struct {
+				Text string `json:"text"`
+				Type string `json:"type"`
+			} `json:"copyrights"`
 			Description     string `json:"description"`
 			HtmlDescription string `json:"html_description"`
-			DurationMs      int    `json:"duration_ms"`
 			Explicit        bool   `json:"explicit"`
 			ExternalUrls    struct {
 				Spotify string `json:"spotify"`
@@ -605,50 +587,14 @@ type UsersQueue struct {
 				Height int    `json:"height"`
 				Width  int    `json:"width"`
 			} `json:"images"`
-			IsExternallyHosted   bool     `json:"is_externally_hosted"`
-			IsPlayable           bool     `json:"is_playable"`
-			Language             string   `json:"language"`
-			Languages            []string `json:"languages"`
-			Name                 string   `json:"name"`
-			ReleaseDate          string   `json:"release_date"`
-			ReleaseDatePrecision string   `json:"release_date_precision"`
-			ResumePoint          struct {
-				FullyPlayed      bool `json:"fully_played"`
-				ResumePositionMs int  `json:"resume_position_ms"`
-			} `json:"resume_point"`
-			Type         string `json:"type"`
-			Uri          string `json:"uri"`
-			Restrictions struct {
-				Reason string `json:"reason"`
-			} `json:"restrictions"`
-			Show struct {
-				AvailableMarkets []string `json:"available_markets"`
-				Copyrights       []struct {
-					Text string `json:"text"`
-					Type string `json:"type"`
-				} `json:"copyrights"`
-				Description     string `json:"description"`
-				HtmlDescription string `json:"html_description"`
-				Explicit        bool   `json:"explicit"`
-				ExternalUrls    struct {
-					Spotify string `json:"spotify"`
-				} `json:"external_urls"`
-				Href   string `json:"href"`
-				Id     string `json:"id"`
-				Images []struct {
-					Url    string `json:"url"`
-					Height int    `json:"height"`
-					Width  int    `json:"width"`
-				} `json:"images"`
-				IsExternallyHosted bool     `json:"is_externally_hosted"`
-				Languages          []string `json:"languages"`
-				MediaType          string   `json:"media_type"`
-				Name               string   `json:"name"`
-				Publisher          string   `json:"publisher"`
-				Type               string   `json:"type"`
-				Uri                string   `json:"uri"`
-				TotalEpisodes      int      `json:"total_episodes"`
-			} `json:"show"`
-		} `json:"episode"`
+			IsExternallyHosted bool     `json:"is_externally_hosted"`
+			Languages          []string `json:"languages"`
+			MediaType          string   `json:"media_type"`
+			Name               string   `json:"name"`
+			Publisher          string   `json:"publisher"`
+			Type               string   `json:"type"`
+			Uri                string   `json:"uri"`
+			TotalEpisodes      int      `json:"total_episodes"`
+		} `json:"show"`
 	} `json:"queue"`
 }

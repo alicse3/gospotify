@@ -15,12 +15,29 @@ import (
 
 // AudiobookService interface defines the methods for interacting with the Spotify Audiobook's API.
 type AudiobookService interface {
+	// Get Spotify catalog information for a single audiobook. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	GetAudiobook(input models.GetAudiobookRequest) (*models.Audiobook, error)
+
+	// Get Spotify catalog information for several audiobooks identified by their Spotify IDs. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	GetAudiobooks(input models.GetAudiobooksRequest) (*models.Audiobooks, error)
+
+	// Get Spotify catalog information about an audiobook's chapters. Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	GetAudiobookChapters(input models.GetAudiobookChaptersRequest) (*models.AudiobookChapters, error)
+
+	// Get a list of the audiobooks saved in the current Spotify user's 'Your Music' library.
+	// Authorization scopes: user-library-read
 	GetSavedAudiobooks(input models.GetSavedAudiobooksRequest) (*models.SavedAudiobooks, error)
+
+	// Save one or more audiobooks to the current Spotify user's library.
+	// Authorization scopes: user-library-modify
 	SaveAudiobooks(input models.SaveAudiobooksRequest) error
+
+	// Remove one or more audiobooks from the Spotify user's library.
+	// Authorization scopes: user-library-modify
 	DeleteAudiobooks(input models.RemoveAudiobooksRequest) error
+
+	// Check if one or more audiobooks are already saved in the current Spotify user's library.
+	// Authorization scopes: user-library-read
 	CheckSavedAudiobooks(input models.CheckSavedAudiobooksRequest) (*models.CheckSavedAudiobooks, error)
 }
 

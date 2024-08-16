@@ -14,20 +14,83 @@ import (
 
 // PlayerService interface defines the methods for interacting with the Spotify Player's API.
 type PlayerService interface {
+	// Get information about the user’s current playback state, including track or episode, progress, and active device.
+	// Authorization scopes: user-read-playback-state
 	GetPlaybackState(models.GetPlaybackStateRequest) (*models.PlaybackState, error)
+
+	// Transfer playback to a new device and optionally begin playback. This API only works for users who have Spotify Premium. The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	TransferPlayback(models.TransferPlaybackRequest) error
+
+	// Get information about a user’s available Spotify Connect devices. Some device models are not supported and will not be listed in the API response.
+	// Authorization scopes: user-read-playback-state
 	GetAvailableDevices() (*models.AvailableDevices, error)
+
+	// Get the object currently being played on the user's Spotify account.
+	// Authorization scopes: user-read-currently-playing
 	GetCurrentlyPlayingTrack(models.GetCurrentlyPlayingTrackRequest) (*models.PlaybackState, error)
+
+	// Start a new context or resume current playback on the user's active device.
+	// This API only works for users who have Spotify Premium.
+	// The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	StartOrResumePlayback(models.StartOrResumePlaybackRequest) error
+
+	// Pause playback on the user's account.
+	// This API only works for users who have Spotify Premium.
+	// The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	PausePlayback(models.PausePlaybackRequest) error
+
+	// Skips to next track in the user’s queue.
+	// This API only works for users who have Spotify Premium.
+	// The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	SkipToNext(models.SkipToNextRequest) error
+
+	// Skips to previous track in the user’s queue.
+	// This API only works for users who have Spotify Premium.
+	// The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	SkipToPrevious(models.SkipToPreviousRequest) error
+
+	// Seeks to the given position in the user’s currently playing track.
+	// This API only works for users who have Spotify Premium.
+	// The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	SeekToPosition(models.SeekToPositionRequest) error
+
+	// Set the repeat mode for the user's playback.
+	// This API only works for users who have Spotify Premium.
+	// The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	SetRepeatMode(models.SetRepeatModeRequest) error
+
+	// Set the volume for the user’s current playback device.
+	// This API only works for users who have Spotify Premium.
+	// The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	SetPlaybackVolume(models.SetPlaybackVolumeRequest) error
+
+	// Toggle shuffle on or off for user’s playback.
+	// This API only works for users who have Spotify Premium.
+	// The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	TogglePlaybackShuffle(models.TogglePlaybackShuffleRequest) error
+
+	// Get tracks from the current user's recently played tracks.
+	// Note: Currently doesn't support podcast episodes.
+	// Authorization scopes: user-read-recently-played
 	GetRecentlyPlayedTracks(models.GetRecentlyPlayedTracksRequest) (*models.RecentlyPlayedTracks, error)
+
+	// Get the list of objects that make up the user's queue.
+	// Authorization scopes: user-read-currently-playing, user-read-playback-state
 	GetUsersQueue() (*models.UsersQueue, error)
+
+	// Add an item to the end of the user's current playback queue.
+	// This API only works for users who have Spotify Premium.
+	// The order of execution is not guaranteed when you use this API with other Player API endpoints.
+	// Authorization scopes: user-modify-playback-state
 	AddItemToPlaybackQueue(models.AddItemToPlaybackQueueRequest) error
 }
 
@@ -44,7 +107,10 @@ func NewDefaultPlayerService(client *utils.HttpClient) *DefaultPlayerService {
 // GetPlaybackState implements the DefaultPlayerService's interface GetPlaybackState method.
 func (service *DefaultPlayerService) GetPlaybackState(input models.GetPlaybackStateRequest) (*models.PlaybackState, error) {
 	// Add inputs to the query parameters
-	params := map[string]string{"market": input.Market, "additional_types": input.AdditionalTypes}
+	params := map[string]string{"market": input.Market}
+	if input.AdditionalTypes != "" {
+		params["additional_types"] = input.AdditionalTypes
+	}
 
 	// Make an API call
 	res, err := service.client.Get(context.Background(), consts.EndpointPlaybackState, params)
@@ -91,7 +157,7 @@ func (service *DefaultPlayerService) TransferPlayback(input models.TransferPlayb
 	}
 
 	// Handle Spotify API error
-	if res.StatusCode != http.StatusOK {
+	if res.StatusCode != http.StatusNoContent {
 		return utils.ParseSpotifyError(res, utils.RegErrorType)
 	}
 
@@ -132,7 +198,10 @@ func (service *DefaultPlayerService) GetAvailableDevices() (*models.AvailableDev
 // GetCurrentlyPlayingTrack implements the DefaultPlayerService's interface GetCurrentlyPlayingTrack method.
 func (service *DefaultPlayerService) GetCurrentlyPlayingTrack(input models.GetCurrentlyPlayingTrackRequest) (*models.PlaybackState, error) {
 	// Add inputs to the query parameters
-	params := map[string]string{"market": input.Market, "additional_types": input.AdditionalTypes}
+	params := map[string]string{"market": input.Market}
+	if input.AdditionalTypes != "" {
+		params["additional_types"] = input.AdditionalTypes
+	}
 
 	// Make an API call
 	res, err := service.client.Get(context.Background(), consts.EndpointCurrentlyPlayingTrack, params)
@@ -343,7 +412,13 @@ func (service *DefaultPlayerService) TogglePlaybackShuffle(input models.TogglePl
 // GetRecentlyPlayedTracks implements the DefaultPlayerService's interface GetRecentlyPlayedTracks method.
 func (service *DefaultPlayerService) GetRecentlyPlayedTracks(input models.GetRecentlyPlayedTracksRequest) (*models.RecentlyPlayedTracks, error) {
 	// Add inputs to the query parameters
-	params := map[string]string{"limit": strconv.Itoa(input.Limit), "after": strconv.Itoa(input.After), "before": strconv.Itoa(input.Before)}
+	params := map[string]string{"limit": strconv.Itoa(input.Limit)}
+	if input.After > 0 {
+		params["after"] = strconv.Itoa(input.After)
+	}
+	if input.Before > 0 {
+		params["before"] = strconv.Itoa(input.Before)
+	}
 
 	// Make an API call
 	res, err := service.client.Get(context.Background(), consts.EndpointRecentlyPlayedTracks, params)

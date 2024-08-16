@@ -109,8 +109,86 @@ type UserTopItems struct {
 	Previous string `json:"previous"`
 	Total    int    `json:"total"`
 	Items    []struct {
-		Artist
-		Track
+		ExternalUrls struct {
+			Spotify string `json:"spotify"`
+		} `json:"external_urls"`
+		Followers struct {
+			Href  any `json:"href"`
+			Total int `json:"total"`
+		} `json:"followers"`
+		Genres []string `json:"genres"`
+		Href   string   `json:"href"`
+		Id     string   `json:"id"`
+		Images []struct {
+			Url    string `json:"url"`
+			Height int    `json:"height"`
+			Width  int    `json:"width"`
+		} `json:"images"`
+		Name       string `json:"name"`
+		Popularity int    `json:"popularity"`
+		Type       string `json:"type"`
+		Uri        string `json:"uri"`
+		Album      struct {
+			AlbumType        string   `json:"album_type"`
+			TotalTracks      int      `json:"total_tracks"`
+			AvailableMarkets []string `json:"available_markets"`
+			ExternalUrls     struct {
+				Spotify string `json:"spotify"`
+			} `json:"external_urls"`
+			Href   string `json:"href"`
+			Id     string `json:"id"`
+			Images []struct {
+				Url    string `json:"url"`
+				Height int    `json:"height"`
+				Width  int    `json:"width"`
+			} `json:"images"`
+			Name                 string `json:"name"`
+			ReleaseDate          string `json:"release_date"`
+			ReleaseDatePrecision string `json:"release_date_precision"`
+			Restrictions         struct {
+				Reason string `json:"reason"`
+			} `json:"restrictions"`
+			Type    string `json:"type"`
+			Uri     string `json:"uri"`
+			Artists []struct {
+				ExternalUrls struct {
+					Spotify string `json:"spotify"`
+				} `json:"external_urls"`
+				Href string `json:"href"`
+				Id   string `json:"id"`
+				Name string `json:"name"`
+				Type string `json:"type"`
+				Uri  string `json:"uri"`
+			} `json:"artists"`
+		} `json:"album"`
+		Artists []struct {
+			ExternalUrls struct {
+				Spotify string `json:"spotify"`
+			} `json:"external_urls"`
+			Href string `json:"href"`
+			Id   string `json:"id"`
+			Name string `json:"name"`
+			Type string `json:"type"`
+			Uri  string `json:"uri"`
+		} `json:"artists"`
+		AvailableMarkets []string `json:"available_markets"`
+		DiscNumber       int      `json:"disc_number"`
+		DurationMs       int      `json:"duration_ms"`
+		Explicit         bool     `json:"explicit"`
+		ExternalIds      struct {
+			Isrc string `json:"isrc"`
+			Ean  string `json:"ean"`
+			Upc  string `json:"upc"`
+		} `json:"external_ids"`
+		IsPlayable bool `json:"is_playable"`
+		LinkedFrom struct {
+		} `json:"linked_from"`
+		Restrictions struct {
+			Reason string `json:"reason"`
+		} `json:"restrictions"`
+		PreviewUrl  string `json:"preview_url"`
+		TrackNumber int    `json:"track_number"`
+		IsLocal     bool   `json:"is_local"`
 	} `json:"items"`
 }
 

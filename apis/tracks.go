@@ -15,15 +15,41 @@ import (
 
 // TrackService interface defines the methods for interacting with the Spotify Track's API.
 type TrackService interface {
+	// Get Spotify catalog information for a single track identified by its unique Spotify ID.
 	GetTrack(input models.GetTrackRequest) (*models.Track, error)
+
+	// Get Spotify catalog information for multiple tracks based on their Spotify IDs.
 	GetTracks(input models.GetTracksRequest) (*models.Tracks, error)
+
+	// Get a list of the songs saved in the current Spotify user's 'Your Music' library.
+	// Authorization scopes: user-library-read
 	GetSavedTracks(input models.GetSavedTracksRequest) (*models.SavedTracks, error)
+
+	// Save one or more tracks to the current user's 'Your Music' library.
+	// Authorization scopes: user-library-modify
 	SaveTracks(input models.SaveTracksRequest) error
+
+	// Remove one or more tracks from the current user's 'Your Music' library.
+	// Authorization scopes: user-library-modify
 	RemoveSavedTracks(input models.RemoveTracksRequest) error
+
+	// Check if one or more tracks is already saved in the current Spotify user's 'Your Music' library.
+	// Authorization scopes: user-library-read
 	CheckSavedTracks(input models.CheckSavedTracksRequest) (*models.CheckSavedTracks, error)
+
+	// Get audio features for multiple tracks based on their Spotify IDs.
 	CheckSeveralTracksAudioFeatures(input models.GetSeveralTracksAudioFeaturesRequest) (*models.SeveralTracksAudioFeatures, error)
+
+	// Get audio feature information for a single track identified by its unique Spotify ID.
 	CheckTracksAudioFeatures(input models.GetTracksAudioFeaturesRequest) (*models.TracksAudioFeatures, error)
+
+	// Get a low-level audio analysis for a track in the Spotify catalog.
+	// The audio analysis describes the track’s structure and musical content, including rhythm, pitch, and timbre.
 	CheckTracksAudioAnalysis(input models.GetTracksAudioAnalysisRequest) (*models.TracksAudioAnalysis, error)
+
+	// Recommendations are generated based on the available information for a given seed entity and matched against similar artists and tracks.
+	// If there is sufficient information about the provided seeds, a list of tracks will be returned together with pool size details.
+	// For artists and tracks that are very new or obscure there might not be enough data to generate a list of tracks.
 	GetRecommendations(input models.GetRecommendationsRequest) (*models.GetRecommendations, error)
 }
 
