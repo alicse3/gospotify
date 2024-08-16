@@ -62,16 +62,19 @@ type AddPlaylistItemsRequest struct {
 	Body       AddPlaylistItemsBody
 }
 
+// TracksBody represents the remove playlist items, tracks body information.
+type TracksBody struct {
+	Uri string `json:"uri"`
+}
+
 // RemovePlaylistItemsBody represents the remove playlist items body information.
 type RemovePlaylistItemsBody struct {
 	// Required: array of objects.
 	// An array of objects containing Spotify URIs of the tracks or episodes to remove.
 	// For example: { "tracks": [{ "uri": "spotify:track:4iV5W9uYEdYUVa79Axb7Rh" },{ "uri": "spotify:track:1301WleyT98MSxVHPZCA6M" }] }.
 	// A maximum of 100 objects can be sent at once.
-	Tracks []struct {
-		Uri string `json:"uri"`
-	} `json:"tracks"`
-	SnapshotId string `json:"snapshot_id"`
+	Tracks     []TracksBody `json:"tracks"`
+	SnapshotId string       `json:"snapshot_id"`
 }
 
 // RemovePlaylistItemsRequest represents the remove playlist items request information.
@@ -128,10 +131,17 @@ type GetPlaylistCoverImageRequest struct {
 	PlaylistId string // Required: The Spotify ID of the playlist.
 }
 
+// GetCustomPlaylistCoverImageBody represents the get custom playlist cover image body information.
+type GetCustomPlaylistCoverImageBody struct {
+	Url    string `json:"url"`
+	Height int    `json:"height"`
+	Width  int    `json:"width"`
+}
+
 // GetCustomPlaylistCoverImageRequest represents the get custom playlist cover image request information.
 type GetCustomPlaylistCoverImageRequest struct {
 	PlaylistId string // Required: The Spotify ID of the playlist.
-	Body       string
+	Body       []GetCustomPlaylistCoverImageBody
 }
 
 // Playlist represents the playlist information retrieved from the Spotify API.
@@ -193,8 +203,87 @@ type Playlist struct {
 			} `json:"added_by"`
 			IsLocal bool `json:"is_local"`
 			Track   struct {
-				Album   Album   `json:"album"`
-				Episode Episode `json:"episode"`
+				AlbumType        string   `json:"album_type"`
+				TotalTracks      int      `json:"total_tracks"`
+				AvailableMarkets []string `json:"available_markets"`
+				ExternalUrls     struct {
+					Spotify string `json:"spotify"`
+				} `json:"external_urls"`
+				Href   string `json:"href"`
+				Id     string `json:"id"`
+				Images []struct {
+					Url    string `json:"url"`
+					Height int    `json:"height"`
+					Width  int    `json:"width"`
+				} `json:"images"`
+				Name                 string `json:"name"`
+				ReleaseDate          string `json:"release_date"`
+				ReleaseDatePrecision string `json:"release_date_precision"`
+				Restrictions         struct {
+					Reason string `json:"reason"`
+				} `json:"restrictions"`
+				Type    string `json:"type"`
+				Uri     string `json:"uri"`
+				Artists []struct {
+					ExternalUrls struct {
+						Spotify string `json:"spotify"`
+					} `json:"external_urls"`
+					Href string `json:"href"`
+					Id   string `json:"id"`
+					Name string `json:"name"`
+					Type string `json:"type"`
+					Uri  string `json:"uri"`
+				} `json:"artists"`
+				Tracks     AlbumTracks `json:"tracks"`
+				Copyrights []struct {
+					Text string `json:"text"`
+					Type string `json:"type"`
+				} `json:"copyrights"`
+				ExternalIds struct {
+					Isrc string `json:"isrc"`
+					Ean  string `json:"ean"`
+					Upc  string `json:"upc"`
+				} `json:"external_ids"`
+				Genres             []string `json:"genres"`
+				Label              string   `json:"label"`
+				Popularity         int      `json:"popularity"`
+				AudioPreviewUrl    string   `json:"audio_preview_url"`
+				Description        string   `json:"description"`
+				HtmlDescription    string   `json:"html_description"`
+				DurationMs         int      `json:"duration_ms"`
+				Explicit           bool     `json:"explicit"`
+				IsExternallyHosted bool     `json:"is_externally_hosted"`
+				IsPlayable         bool     `json:"is_playable"`
+				Language           string
+				Languages          []string `json:"languages"`
+				Show               struct {
+					AvailableMarkets []string `json:"available_markets"`
+					Copyrights       []struct {
+						Text string `json:"text"`
+						Type string `json:"type"`
+					} `json:"copyrights"`
+					Description     string `json:"description"`
+					HtmlDescription string `json:"html_description"`
+					Explicit        bool   `json:"explicit"`
+					ExternalUrls    struct {
+						Spotify string `json:"spotify"`
+					} `json:"external_urls"`
+					Href   string `json:"href"`
+					Id     string `json:"id"`
+					Images []struct {
+						Url    string `json:"url"`
+						Height int    `json:"height"`
+						Width  int    `json:"width"`
+					} `json:"images"`
+					IsExternallyHosted bool     `json:"is_externally_hosted"`
+					Languages          []string `json:"languages"`
+					MediaType          string   `json:"media_type"`
+					Name               string   `json:"name"`
+					Publisher          string   `json:"publisher"`
+					Type               string   `json:"type"`
+					Uri                string   `json:"uri"`
+					TotalEpisodes      int      `json:"total_episodes"`
+				} `json:"show"`
 			} `json:"track"`
 		} `json:"items"`
 	} `json:"tracks"`
@@ -227,8 +316,87 @@ type PlaylistItems struct {
 		} `json:"added_by"`
 		IsLocal bool `json:"is_local"`
 		Track   struct {
-			Album   Album   `json:"album"`
-			Episode Episode `json:"episode"`
+			AlbumType        string   `json:"album_type"`
+			TotalTracks      int      `json:"total_tracks"`
+			AvailableMarkets []string `json:"available_markets"`
+			ExternalUrls     struct {
+				Spotify string `json:"spotify"`
+			} `json:"external_urls"`
+			Href   string `json:"href"`
+			Id     string `json:"id"`
+			Images []struct {
+				Url    string `json:"url"`
+				Height int    `json:"height"`
+				Width  int    `json:"width"`
+			} `json:"images"`
+			Name                 string `json:"name"`
+			ReleaseDate          string `json:"release_date"`
+			ReleaseDatePrecision string `json:"release_date_precision"`
+			Restrictions         struct {
+				Reason string `json:"reason"`
+			} `json:"restrictions"`
+			Type    string `json:"type"`
+			Uri     string `json:"uri"`
+			Artists []struct {
+				ExternalUrls struct {
+					Spotify string `json:"spotify"`
+				} `json:"external_urls"`
+				Href string `json:"href"`
+				Id   string `json:"id"`
+				Name string `json:"name"`
+				Type string `json:"type"`
+				Uri  string `json:"uri"`
+			} `json:"artists"`
+			Tracks     AlbumTracks `json:"tracks"`
+			Copyrights []struct {
+				Text string `json:"text"`
+				Type string `json:"type"`
+			} `json:"copyrights"`
+			ExternalIds struct {
+				Isrc string `json:"isrc"`
+				Ean  string `json:"ean"`
+				Upc  string `json:"upc"`
+			} `json:"external_ids"`
+			Genres             []string `json:"genres"`
+			Label              string   `json:"label"`
+			Popularity         int      `json:"popularity"`
+			AudioPreviewUrl    string   `json:"audio_preview_url"`
+			Description        string   `json:"description"`
+			HtmlDescription    string   `json:"html_description"`
+			DurationMs         int      `json:"duration_ms"`
+			Explicit           bool     `json:"explicit"`
+			IsExternallyHosted bool     `json:"is_externally_hosted"`
+			IsPlayable         bool     `json:"is_playable"`
+			Language           string
+			Languages          []string `json:"languages"`
+			Show               struct {
+				AvailableMarkets []string `json:"available_markets"`
+				Copyrights       []struct {
+					Text string `json:"text"`
+					Type string `json:"type"`
+				} `json:"copyrights"`
+				Description     string `json:"description"`
+				HtmlDescription string `json:"html_description"`
+				Explicit        bool   `json:"explicit"`
+				ExternalUrls    struct {
+					Spotify string `json:"spotify"`
+				} `json:"external_urls"`
+				Href   string `json:"href"`
+				Id     string `json:"id"`
+				Images []struct {
+					Url    string `json:"url"`
+					Height int    `json:"height"`
+					Width  int    `json:"width"`
+				} `json:"images"`
+				IsExternallyHosted bool     `json:"is_externally_hosted"`
+				Languages          []string `json:"languages"`
+				MediaType          string   `json:"media_type"`
+				Name               string   `json:"name"`
+				Publisher          string   `json:"publisher"`
+				Type               string   `json:"type"`
+				Uri                string   `json:"uri"`
+				TotalEpisodes      int      `json:"total_episodes"`
+			} `json:"show"`
 		} `json:"track"`
 	} `json:"items"`
 }
@@ -312,7 +480,7 @@ type CategoryPlaylists struct {
 }
 
 // PlaylistCoverImage represents the playlist cover image information retrieved from the Spotify API.
-type PlaylistCoverImage struct {
+type PlaylistCoverImage []struct {
 	Url    string `json:"url"`
 	Height int    `json:"height"`
 	Width  int    `json:"width"`

@@ -15,10 +15,19 @@ import (
 
 // ArtistService interface defines the methods for interacting with the Spotify Artist's API.
 type ArtistService interface {
+	// Get Spotify catalog information for a single artist identified by their unique Spotify ID.
 	GetArtist(input models.GetArtistRequest) (*models.Artist, error)
+
+	// Get Spotify catalog information for several artists based on their Spotify IDs.
 	GetArtists(input models.GetArtistsRequest) (*models.Artists, error)
+
+	// Get Spotify catalog information about an artist's albums.
 	GetArtistAlbums(input models.GetArtistAlbumsRequest) (*models.ArtistAlbums, error)
+
+	// Get Spotify catalog information about an artist's top tracks by country.
 	GetArtistTopTracks(input models.GetArtistTopTracksRequest) (*models.ArtistTopTracks, error)
+
+	// Get Spotify catalog information about artists similar to a given artist. Similarity is based on analysis of the Spotify community's listening history.
 	GetRelatedArtists(input models.GetRelatedArtistsRequest) (*models.Artists, error)
 }
 

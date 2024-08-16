@@ -15,15 +15,42 @@ import (
 
 // UserService interface defines the methods for interacting with the Spotify User's API.
 type UserService interface {
+	// Get detailed profile information about the current user (including the current user's username).
+	// Authorization scopes: user-read-private, user-read-email
 	GetCurrentUserProfile() (*models.User, error)
+
+	// Get the current user's top artists or tracks based on calculated affinity.
+	// Authorization scopes: user-top-read
 	GetUserTopItems(input models.GetUsersTopItemsRequest) (*models.UserTopItems, error)
+
+	// Get public profile information about a Spotify user.
 	GetUsersProfile(input models.GetUsersProfileRequest) (*models.UserProfile, error)
+
+	// Add the current user as a follower of a playlist.
+	// Authorization scopes: playlist-modify-public, playlist-modify-private
 	FollowPlaylist(input models.FollowPlaylistRequest) error
+
+	// Remove the current user as a follower of a playlist.
+	// Authorization scopes: playlist-modify-public, playlist-modify-private
 	UnfollowPlaylist(input models.UnfollowPlaylistRequest) error
+
+	// Get the current user's followed artists.
+	// Authorization scopes: user-follow-read
 	GetFollowedArtists(input models.GetFollowedArtistsRequest) (*models.FollowedArtists, error)
+
+	// Add the current user as a follower of one or more artists or other Spotify users.
+	// Authorization scopes: user-follow-modify
 	FollowArtistsOrUsers(input models.FollowArtistsOrUsersRequest) error
+
+	// Remove the current user as a follower of one or more artists or other Spotify users.
+	// Authorization scopes: user-follow-modify
 	UnfollowArtistsOrUsers(input models.UnfollowArtistsOrUsersRequest) error
+
+	// Check to see if the current user is following one or more artists or other Spotify users.
+	// Authorization scopes: user-follow-read
 	CheckUserFollowsArtistsOrUsers(input models.UserFollowsArtistsOrUsersRequest) (*models.CheckUserFollowsArtistsOrUsers, error)
+
+	// Check to see if the current user is following a specified playlist.
 	CheckCurrentUserFollowsPlaylist(input models.CurrentUserFollowsPlaylistRequest) (*models.CheckCurrentUserFollowsPlaylist, error)
 }
 
@@ -213,7 +240,10 @@ func (service *DefaultUserService) GetFollowedArtists(input models.GetFollowedAr
 	}
 
 	// Add inputs to the query parameters
-	params := map[string]string{"type": input.Type, "after": input.After, "limit": strconv.Itoa(input.Limit)}
+	params := map[string]string{"type": input.Type, "limit": strconv.Itoa(input.Limit)}
+	if input.After != "" {
+		params["after"] = input.After
+	}
 
 	// Make an API call
 	res, err := service.client.Get(context.Background(), consts.EndpointFollowing, params)
@@ -345,9 +375,6 @@ func (service *DefaultUserService) CheckCurrentUserFollowsPlaylist(input models.
 	// Validate the input
 	if input.PlaylistId == "" {
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgPlaylistIdRequired}
-	}
-	if input.Ids == "" {
-		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgIdsRequired}
 	}
 
 	// Substitute id in the endpoint

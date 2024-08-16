@@ -14,6 +14,8 @@ import (
 
 // SearchService interface defines the methods for interacting with the Spotify Search's API.
 type SearchService interface {
+	// Get Spotify catalog information about albums, artists, playlists, tracks, shows, episodes or audiobooks that match a keyword string.
+	// Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 	Search(input models.SearchRequest) (*models.SearchResponse, error)
 }
 

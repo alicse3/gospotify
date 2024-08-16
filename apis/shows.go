@@ -15,12 +15,33 @@ import (
 
 // ShowService interface defines the methods for interacting with the Spotify Show's API.
 type ShowService interface {
+	// Get Spotify catalog information for a single show identified by its unique Spotify ID.
+	// Authorization scopes: user-read-playback-position
 	GetShow(input models.GetShowRequest) (*models.Show, error)
+
+	// Get Spotify catalog information for several shows based on their Spotify IDs.
 	GetShows(input models.GetShowsRequest) (*models.Shows, error)
+
+	// Get Spotify catalog information about an show’s episodes.
+	// Optional parameters can be used to limit the number of episodes returned.
+	// Authorization scopes: user-read-playback-position
 	GetShowEpisodes(input models.GetShowEpisodesRequest) (*models.ShowEpisodes, error)
+
+	// Get a list of shows saved in the current Spotify user's library.
+	// Optional parameters can be used to limit the number of shows returned.
+	// Authorization scopes: user-library-read
 	GetSavedShows(input models.GetSavedShowsRequest) (*models.SavedShows, error)
+
+	// Save one or more shows to current Spotify user's library.
+	// Authorization scopes: user-library-modify
 	SaveShows(input models.SaveShowsRequest) error
+
+	// Delete one or more shows from current Spotify user's library.
+	// Authorization scopes: user-library-modify
 	RemoveSavedShows(input models.RemoveShowsRequest) error
+
+	// Check if one or more shows is already saved in the current Spotify user's library.
+	// Authorization scopes: user-library-read
 	CheckSavedShows(input models.CheckSavedShowsRequest) (*models.CheckSavedShows, error)
 }
 

@@ -15,18 +15,60 @@ import (
 
 // PlaylistService interface defines the methods for interacting with the Spotify Playlist's API.
 type PlaylistService interface {
+	// Get a playlist owned by a Spotify user.
 	GetPlaylist(input models.GetPlaylistRequest) (*models.Playlist, error)
+
+	// Change a playlist's name and public/private state. (The user must, of course, own the playlist.)
+	// Authorization scopes: playlist-modify-public, playlist-modify-private
 	ChangePlaylistDetails(input models.ChangePlaylistDetailsRequest) error
+
+	// Get full details of the items of a playlist owned by a Spotify user.
+	// Authorization scopes: playlist-read-private
 	GetPlaylistItems(input models.GetPlaylistItemsRequest) (*models.PlaylistItems, error)
+
+	// Either reorder or replace items in a playlist depending on the request's parameters.
+	// To reorder items, include range_start, insert_before, range_length and snapshot_id in the request's body.
+	// To replace items, include uris as either a query parameter or in the request's body.
+	// Replacing items in a playlist will overwrite its existing items.
+	// This operation can be used for replacing or clearing items in a playlist.
+
+	// Note: Replace and reorder are mutually exclusive operations which share the same endpoint, but have different parameters.
+	// These operations can't be applied together in a single request.
+
+	// Authorization scopes: playlist-modify-public, playlist-modify-private
 	UpdatePlaylistItems(input models.UpdatePlaylistItemsRequest) (*models.UpdatePlaylistItems, error)
+
+	// Add one or more items to a user's playlist.
+	// Authorization scopes: playlist-modify-public, playlist-modify-private
 	AddPlaylistItems(input models.AddPlaylistItemsRequest) (*models.AddPlaylistItems, error)
+
+	// Remove one or more items from a user's playlist.
+	// Authorization scopes: playlist-modify-public, playlist-modify-private
 	RemovePlaylistItems(input models.RemovePlaylistItemsRequest) (*models.RemovePlaylistItems, error)
+
+	// Get a list of the playlists owned or followed by the current Spotify user.
+	// Authorization scopes: playlist-read-private
 	GetCurrentUserPlaylists(input models.GetCurrentUsersPlaylistsRequest) (*models.Playlists, error)
+
+	// Get a list of the playlists owned or followed by a Spotify user.
+	// Authorization scopes: playlist-read-private, playlist-read-collaborative
 	GetUserPlaylists(input models.GetUsersPlaylistsRequest) (*models.Playlists, error)
+
+	// Create a playlist for a Spotify user. (The playlist will be empty until you add tracks.) Each user is generally limited to a maximum of 11000 playlists.
+	// Authorization scopes: playlist-modify-public, playlist-modify-private
 	CreatePlaylist(input models.CreatePlaylistRequest) (*models.Playlist, error)
+
+	// Get a list of Spotify featured playlists (shown, for example, on a Spotify player's 'Browse' tab).
 	GetFeaturedPlaylists(input models.GetFeaturedPlaylistsRequest) (*models.FeaturedPlaylists, error)
+
+	// Get a list of Spotify playlists tagged with a particular category.
 	GetCategoryPlaylists(input models.GetCategoryPlaylistsRequest) (*models.CategoryPlaylists, error)
+
+	// Get the current image associated with a specific playlist.
 	GetPlaylistCoverImage(input models.GetPlaylistCoverImageRequest) (*models.PlaylistCoverImage, error)
+
+	// Replace the image used to represent a specific playlist.
+	// Authorization scopes: ugc-image-upload, playlist-modify-public, playlist-modify-private
 	AddCustomPlaylistCoverImage(input models.GetCustomPlaylistCoverImageRequest) error
 }
 
@@ -51,7 +93,10 @@ func (service *DefaultPlaylistService) GetPlaylist(input models.GetPlaylistReque
 	endpoint := fmt.Sprintf(consts.EndpointPlaylists, input.PlaylistId)
 
 	// Add inputs to the query parameters
-	params := map[string]string{"playlist_id": input.PlaylistId, "market": input.Market, "fields": input.Fields, "additional_types": input.AdditionalTypes}
+	params := map[string]string{"playlist_id": input.PlaylistId, "market": input.Market, "fields": input.Fields}
+	if input.AdditionalTypes != "" {
+		params["additional_types"] = input.AdditionalTypes
+	}
 
 	// Make an API call
 	res, err := service.client.Get(context.Background(), endpoint, params)
@@ -120,7 +165,10 @@ func (service *DefaultPlaylistService) GetPlaylistItems(input models.GetPlaylist
 	endpoint := fmt.Sprintf(consts.EndpointPlaylistItems, input.PlaylistId)
 
 	// Add inputs to the query parameters
-	params := map[string]string{"playlist_id": input.PlaylistId, "market": input.Market, "fields": input.Fields, "limit": strconv.Itoa(input.Limit), "offset": strconv.Itoa(input.Offset), "additional_types": input.AdditionalTypes}
+	params := map[string]string{"playlist_id": input.PlaylistId, "market": input.Market, "fields": input.Fields, "limit": strconv.Itoa(input.Limit), "offset": strconv.Itoa(input.Offset)}
+	if input.AdditionalTypes != "" {
+		params["additional_types"] = input.AdditionalTypes
+	}
 
 	// Make an API call
 	res, err := service.client.Get(context.Background(), endpoint, params)
@@ -428,11 +476,14 @@ func (service *DefaultPlaylistService) GetCategoryPlaylists(input models.GetCate
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgCategoryIdRequired}
 	}
 
+	// Substitute id in the endpoint
+	endpoint := fmt.Sprintf(consts.EndpointCategoryPlaylists, input.CategoryId)
+
 	// Add inputs to the query parameters
 	params := map[string]string{"category_id": input.CategoryId, "limit": strconv.Itoa(input.Limit), "offset": strconv.Itoa(input.Offset)}
 
 	// Make an API call
-	res, err := service.client.Get(context.Background(), consts.EndpointCategoryPlaylists, params)
+	res, err := service.client.Get(context.Background(), endpoint, params)
 	if err != nil {
 		return nil, &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToGetCategoryPlaylists, Err: err}
 	}
@@ -466,11 +517,14 @@ func (service *DefaultPlaylistService) GetPlaylistCoverImage(input models.GetPla
 		return nil, &utils.AppError{Status: http.StatusBadRequest, Message: consts.MsgPlaylistIdRequired}
 	}
 
+	// Substitute id in the endpoint
+	endpoint := fmt.Sprintf(consts.EndpointPlaylistCoverImage, input.PlaylistId)
+
 	// Add inputs to the query parameters
 	params := map[string]string{"playlist_id": input.PlaylistId}
 
 	// Make an API call
-	res, err := service.client.Get(context.Background(), consts.EndpointPlaylistCoverImage, params)
+	res, err := service.client.Get(context.Background(), endpoint, params)
 	if err != nil {
 		return nil, &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToGetPlaylistCoverImage, Err: err}
 	}

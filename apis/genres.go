@@ -13,6 +13,7 @@ import (
 
 // GenreService interface defines the methods for interacting with the Spotify Genre's API.
 type GenreService interface {
+	// Retrieve a list of available genres seed parameter values for recommendations.
 	GetAvailableGenresSeeds() (*models.Genres, error)
 }
 

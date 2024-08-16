@@ -15,11 +15,36 @@ import (
 
 // EpisodeService interface defines the methods for interacting with the Spotify Episode's API.
 type EpisodeService interface {
+	// Get Spotify catalog information for a single episode identified by its unique Spotify ID.
+	// Authorization scopes: user-read-playback-position
 	GetEpisode(input models.GetEpisodeRequest) (*models.Episode, error)
+
+	// Get Spotify catalog information for several episodes based on their Spotify IDs.
+	// Authorization scopes: user-read-playback-position
 	GetEpisodes(input models.GetEpisodesRequest) (*models.Episodes, error)
+
+	// Get a list of the episodes saved in the current Spotify user's library.
+	// This API endpoint is in beta and could change without warning.
+	// Please share any feedback that you have, or issues that you discover, in Spotify developer community forum.
+	// Authorization scopes: user-library-read, user-read-playback-position
 	GetSavedEpisodes(input models.GetSavedEpisodesRequest) (*models.SavedEpisodes, error)
+
+	// Save one or more episodes to the current user's library.
+	// This API endpoint is in beta and could change without warning.
+	// Please share any feedback that you have, or issues that you discover, in Spotify developer community forum.
+	// Authorization scopes: user-library-modify
 	SaveEpisodes(input models.SaveEpisodesRequest) error
+
+	// Remove one or more episodes from the current user's library.
+	// This API endpoint is in beta and could change without warning.
+	// Please share any feedback that you have, or issues that you discover, in Spotify developer community forum.
+	// Authorization scopes: user-library-modify
 	RemoveEpisodes(input models.RemoveEpisodesRequest) error
+
+	// Check if one or more episodes is already saved in the current Spotify user's 'Your Episodes' library.
+	// This API endpoint is in beta and could change without warning.
+	// Please share any feedback that you have, or issues that you discover, in Spotify developer community forum.
+	// Authorization scopes: user-library-read
 	CheckSavedEpisodes(input models.CheckSavedEpisodesRequest) (*models.CheckSavedEpisodes, error)
 }
 
@@ -82,7 +107,7 @@ func (service *DefaultEpisodeService) GetEpisodes(input models.GetEpisodesReques
 	}
 
 	// Add inputs to the query parameters
-	params := map[string]string{"id": input.Ids, "market": input.Market}
+	params := map[string]string{"ids": input.Ids, "market": input.Market}
 
 	// Make an API call
 	res, err := service.client.Get(context.Background(), consts.EndpointEpisodes, params)
@@ -118,7 +143,7 @@ func (service *DefaultEpisodeService) GetSavedEpisodes(input models.GetSavedEpis
 	params := map[string]string{"market": input.Market, "limit": strconv.Itoa(input.Limit), "offset": strconv.Itoa(input.Offset)}
 
 	// Make an API call
-	res, err := service.client.Get(context.Background(), consts.EndpointEpisodes, params)
+	res, err := service.client.Get(context.Background(), consts.EndpointMyEpisodes, params)
 	if err != nil {
 		return nil, &utils.AppError{Status: http.StatusInternalServerError, Message: consts.MsgFailedToGetSavedEpisodes, Err: err}
 	}

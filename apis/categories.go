@@ -15,7 +15,10 @@ import (
 
 // CategoryService interface defines the methods for interacting with the Spotify Category's API.
 type CategoryService interface {
+	// Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
 	GetBrowseCategories(input models.GetBrowseCategoriesRequest) (*models.Categories, error)
+
+	// Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
 	GetBrowseCategory(input models.GetBrowseCategoryRequest) (*models.Category, error)
 }
 

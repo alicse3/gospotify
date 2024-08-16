@@ -15,13 +15,32 @@ import (
 
 // AlbumService interface defines the methods for interacting with the Spotify Album's API.
 type AlbumService interface {
+	// Get Spotify catalog information for a single album.
 	GetAlbum(input models.GetAlbumRequest) (*models.Album, error)
+
+	// Get Spotify catalog information for multiple albums identified by their Spotify IDs.
 	GetAlbums(input models.GetAlbumsRequest) (*models.Albums, error)
+
+	// Get Spotify catalog information about an album’s tracks. Optional parameters can be used to limit the number of tracks returned.
 	GetAlbumTracks(input models.GetAlbumTracksRequest) (*models.AlbumTracks, error)
+
+	// Get a list of the albums saved in the current Spotify user's 'Your Music' library.
+	// Authorization scopes: user-library-read
 	GetSavedAlbums(input models.GetSavedAlbumsRequest) (*models.SavedAlbums, error)
+
+	// Save one or more albums to the current user's 'Your Music' library.
+	// Authorization scopes: user-library-modify
 	SaveAlbums(input models.SaveAlbumsRequest) error
+
+	// Remove one or more albums from the current user's 'Your Music' library.
+	// Authorization scopes: user-library-modify
 	RemoveAlbums(input models.RemoveAlbumsRequest) error
+
+	// Check if one or more albums is already saved in the current Spotify user's 'Your Music' library.
+	// Authorization scopes: user-library-read
 	CheckSavedAlbums(input models.CheckSavedAlbumsRequest) (*models.CheckSavedAlbums, error)
+
+	// Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
 	GetNewReleases(input models.GetNewReleasesRequest) (*models.NewlyReleasedAlbums, error)
 }
 

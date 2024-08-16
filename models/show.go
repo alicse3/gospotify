@@ -75,7 +75,7 @@ type Show struct {
 
 // Shows represents the shows information retrieved from the Spotify API.
 type Shows struct {
-	Shows struct {
+	Shows []struct {
 		AvailableMarkets []string `json:"available_markets"`
 		Copyrights       []struct {
 			Text string `json:"text"`
