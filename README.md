@@ -7,10 +7,12 @@ This project is a simple Golang-based web client for interacting with the Spotif
 
 ## Features
 
-- Authenticate with Spotify
-- Retrieve access tokens
-- Access Spotify data
-- Access Spotify data with custom scopes
+- **Authenticate with Spotify:** Redirect users to Spotify’s authorization endpoint.
+- **Retrieve Access Tokens:** Exchange authorization code for access tokens.
+- **Auto Refresh Access Token:** Use refresh tokens to obtain new access tokens.
+- **Set Permanent Token:** Store and manage access tokens securely.
+- **Access Spotify Data:** Use access tokens to query Spotify's Web API.
+- **Access Data with Custom Scopes:** Request specific permissions via custom scopes.
 
 ## Prerequisites
 
@@ -22,15 +24,16 @@ Visit Spotify [Web API](https://developer.spotify.com/documentation/web-api) doc
 
 ## Installation
 
-1. **Clone the Repository**
+1. **Install**
 
 ```bash
-git clone https://github.com/alicse3/gospotify.git
+go get github.com/alicse3/gospotify
 ```
 
-2. **Install Dependencies**
-```bash
-go mod tidy
+2. **Use**
+
+```go
+import "github.com/alicse3/gospotify"
 ```
 
 ## Configuration
