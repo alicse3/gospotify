@@ -1,9 +1,9 @@
 <h1 align="center">gospotify</h1>
-<h3 align="center">A simple Golang-based Spotify web client</h3>
+<h3 align="center">A simple Golang-based Spotify SDK</h3>
 
 ## Overview
 
-This project is a simple Golang-based web client for interacting with the Spotify API. It provides basic functionalities for authenticating with Spotify, retrieving access tokens, and accessing Spotify data.
+This project is a simple Golang-based SDK for interacting with the Spotify API. It provides basic functionalities for authenticating with Spotify, retrieving access tokens, and accessing Spotify data.
 
 ## Features
 
@@ -47,7 +47,7 @@ export SPOTIFY_REDIRECT_URL="your_redirect_uri"
 ```
 
 ## Usage
-1. **Run the Web Client**
+1. **Run the SDK**
 ```bash
 go run main.go
 ```
